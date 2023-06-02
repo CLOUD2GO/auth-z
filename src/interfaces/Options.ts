@@ -8,7 +8,7 @@ export interface RequiredOptions {
      * A function that returns a **user unique identifier**, agnostic to authentication method or
      * information. This identifier will be used to generate the JWT for further requests.
      */
-    userIdentifier: (request: Request) => Awaitable<string>;
+    userIdentifier: (request: Request) => Awaitable<string | null>;
     /**
      * Details for the JWT authentication.
      */

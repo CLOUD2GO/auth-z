@@ -23,7 +23,7 @@ declare global {
 }
 
 export default function authZ(options: Options) {
-    async function globalMiddleware(
+    async function middleware(
         request: Request,
         response: Response,
         next: NextFunction
@@ -124,6 +124,6 @@ export default function authZ(options: Options) {
     }
 
     return {
-        globalMiddleware
+        middleware
     };
 }

@@ -13,6 +13,14 @@ export default function (
     async function authenticate() {
         const userId = await options.userIdentifier(request);
 
+        if (!userId) {
+            response
+                .status(401)
+                .json(responseError('Invalid user'));
+
+            return;
+        }
+
         const expiresIn = toSeconds(
             millisFromNow(seconds(options.authentication.expirationTimeSpan))
         );
