@@ -37,10 +37,6 @@ export interface OptionalOptions {
          * The JWT expiration time span, in **seconds**, defaults to `3600`, or 1 hour.
          */
         expirationTimeSpan: number;
-        /**
-         * If the authentication response should include the user identifier, defaults to `false`.
-         */
-        returnIdentifier: boolean;
     };
 }
 

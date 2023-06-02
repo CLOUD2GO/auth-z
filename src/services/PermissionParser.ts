@@ -11,7 +11,6 @@ export type PermissionsHandler = ReturnType<typeof PermissionParser>;
 type PermissionScope = string;
 type PermissionAction = 'Read' | 'Write' | 'ReadWrite';
 type PermissionResource = Exclude<Permission['resources'], string[]> | string;
-type ExpandedPermissionResource = PermissionResource | AnyResource;
 
 export default function PermissionParser(roles: Role[]) {
     const permissions = new Map<string, Permission>();

@@ -11,6 +11,8 @@ export default function (
     response: Response
 ) {
     async function authenticate() {
+        if (!options.authentication.secret)
+            throw new Error('Authentication secret must be set');
         const userId = await options.userIdentifier(request);
 
         if (!userId) {
@@ -23,12 +25,16 @@ export default function (
             millisFromNow(seconds(options.authentication.expirationTimeSpan))
         );
 
-        const tokenString = jwt.sign(userId, options.authentication.secret, {
-            expiresIn,
-            issuer: constants.authentication.jwtIssuer,
-            audience: constants.authentication.jwtAudience,
-            subject: constants.authentication.jwtSubject
-        });
+        const tokenString = jwt.sign(
+            { userId },
+            options.authentication.secret,
+            {
+                expiresIn,
+                issuer: constants.authentication.jwtIssuer,
+                audience: constants.authentication.jwtAudience,
+                subject: constants.authentication.jwtSubject
+            }
+        );
 
         const result: Record<string, string | number | boolean> = {
             token: tokenString,
@@ -47,10 +53,10 @@ export default function (
 
         if (type !== 'Bearer') throw new Error('Invalid authorization type');
 
-        const userId = jwt.verify(token, options.authentication.secret, {
+        const { userId } = jwt.verify(token, options.authentication.secret, {
             audience: constants.authentication.jwtAudience,
             issuer: constants.authentication.jwtIssuer
-        }) as string;
+        }) as { userId: string };
 
         return userId;
     }

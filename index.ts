@@ -25,13 +25,13 @@ declare global {
 }
 
 export default function authZ(options: Options) {
+    const _options = parseOptions(options);
+
     async function middleware(
         request: Request,
         response: Response,
         next: NextFunction
     ) {
-        const _options = parseOptions(options);
-
         const authProvider = AuthenticationProvider(
             _options,
             request,

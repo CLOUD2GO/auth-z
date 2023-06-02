@@ -12,7 +12,7 @@
     ],
     "scripts": {
         "build": "tsc",
-        "test": "echo No test yet",
+        "test": "jest",
         "format": "prettier -w --config .prettierrc --ignore-path .gitignore .",
         "ci": "yarn install --frozen-lockfile",
         "git-add": "git add ."
@@ -24,6 +24,7 @@
         "git-add"
     ],
     "devDependencies": {
+        "@jest-mock/express": "^2.0.1",
         "@jest/globals": "^29.5.0",
         "@types/jsonwebtoken": "^9.0.2",
         "@types/node": "^20.2.5",
