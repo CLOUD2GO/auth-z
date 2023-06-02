@@ -22,7 +22,7 @@ export interface RequiredOptions {
     authorization: {
         /**
          * A function that returns the roles of a given user, identified by the `userIdentifier` callback.
-        */
+         */
         rolesProvider: (userId: string) => Awaitable<Role[]>;
     };
 }
@@ -41,8 +41,8 @@ export interface OptionalOptions {
          * If the authentication response should include the user identifier, defaults to `false`.
          */
         returnIdentifier: boolean;
-    }
-};
+    };
+}
 
 export type FilledOptions = RequiredOptions & OptionalOptions;
 

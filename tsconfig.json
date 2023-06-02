@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
-      "target": "ES6",
-      "module": "commonjs",
-      "lib": ["ESNext"],
-      "declaration": true,
-      "outDir": "lib",
-      "strict": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
+        "target": "ES6",
+        "module": "commonjs",
+        "lib": ["ESNext"],
+        "declaration": true,
+        "outDir": "lib",
+        "strict": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
     },
     "include": ["index.ts", "src/**/*.ts"],
     "exclude": ["node_modules", "lib"]
-  }
+}

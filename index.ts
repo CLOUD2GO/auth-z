@@ -6,6 +6,7 @@ import responseError from './src/util/responseError';
 import PermissionParser from './src/services/PermissionParser';
 import RequestMethods from './src/interfaces/RequestMethods';
 import Permission from './src/interfaces/Permission';
+import Role from './src/interfaces/Role';
 
 type InternalRequest = {
     authZ?: RequestMethods;
@@ -195,3 +196,5 @@ export default function authZ(options: Options) {
         withLocalActions: _withPermissions('local', 'action')
     };
 }
+
+export { Options, Permission, Role };

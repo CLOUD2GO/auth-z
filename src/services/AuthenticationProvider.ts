@@ -14,9 +14,7 @@ export default function (
         const userId = await options.userIdentifier(request);
 
         if (!userId) {
-            response
-                .status(401)
-                .json(responseError('Invalid user'));
+            response.status(401).json(responseError('Invalid user'));
 
             return;
         }

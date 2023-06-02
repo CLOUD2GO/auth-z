@@ -1,22 +1,22 @@
 name: NPM Publish
 
 on:
-  push:
-    branches: [ "master" ]
+    push:
+        branches: ['master']
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm i -g yarn
-      - run: yarn ci
-      - run: yarn test
-      - run: yarn build
-      - run: yarn publish --access=public --use-yarnrc '.yarnrc.yml'
-        env:
-          NPM_AUTH_TOKEN: ${{secrets.npm_token}}
-          NPM_REGISTRY: https://registry.npmjs.org/
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - run: npm i -g yarn
+            - run: yarn ci
+            - run: yarn test
+            - run: yarn build
+            - run: yarn publish --access=public --use-yarnrc '.yarnrc.yml'
+              env:
+                  NPM_AUTH_TOKEN: ${{secrets.npm_token}}
+                  NPM_REGISTRY: https://registry.npmjs.org/

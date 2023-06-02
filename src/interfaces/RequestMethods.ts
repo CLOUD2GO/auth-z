@@ -37,7 +37,9 @@ interface RequestMethods {
     /**
      * Get the current user permission context for the given permission.
      */
-    getPermissionContext: (permission: string) => Role['context'] | 'both' | 'mixed' | 'none';
+    getPermissionContext: (
+        permission: string
+    ) => Role['context'] | 'both' | 'mixed' | 'none';
     /**
      * Get a **copy** of the current user roles.
      */
