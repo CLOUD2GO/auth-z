@@ -5,6 +5,7 @@ import AuthenticationProvider from './src/services/AuthenticationProvider';
 import responseError from './src/util/responseError';
 import PermissionParser from './src/services/PermissionParser';
 import RequestMethods from './src/interfaces/RequestMethods';
+import Permission from './src/interfaces/Permission';
 
 type InternalRequest = {
     authZ?: RequestMethods;
@@ -17,7 +18,7 @@ declare global {
              * AuthZ permissions handler, will be truthy if the `AuthZ.globalMiddleware`
              * middleware has been added on the app request life-cycle.
              */
-            readonly authZ?: RequestMethods;
+            readonly authZ: RequestMethods;
         }
     }
 }
@@ -89,41 +90,108 @@ export default function authZ(options: Options) {
                 return structuredClone(roles);
             },
 
-            // TODO: Implement
-
             getPermissionContext(permission: string) {
-                return 'none';
+                return permissionParser.checkContext(permission);
             },
 
             hasPermissions(...permissions) {
-                return false;
+                return permissions.every(permissionParser.check);
             },
 
             hasGlobalPermissions(...globalPermissions) {
-                return false;
+                return globalPermissions.every(permissionParser.checkGlobal);
             },
 
             hasLocalPermissions(...localPermissions) {
-                return false;
+                return localPermissions.every(permissionParser.checkLocal);
             },
 
             hasActions(...permissionActions) {
-                return false;
+                return permissionActions.every(permissionParser.checkAction);
             },
 
             hasGlobalActions(...globalPermissionActions) {
-                return false;
+                return globalPermissionActions.every(
+                    permissionParser.checkActionGlobal
+                );
             },
 
             hasLocalActions(...localPermissionActions) {
-                return false;
+                return localPermissionActions.every(
+                    permissionParser.checkActionLocal
+                );
             }
         };
 
         next();
     }
 
+    function _withPermissions(
+        contextType: Permission['context'] | null = null,
+        type: 'full' | 'action' = 'full'
+    ) {
+        function getChecker(authZ: Request['authZ']) {
+            if (type === 'full') {
+                if (contextType) {
+                    return contextType === 'global'
+                        ? authZ.hasGlobalPermissions
+                        : authZ.hasLocalPermissions;
+                }
+
+                return authZ.hasPermissions;
+            }
+
+            if (type === 'action') {
+                if (contextType) {
+                    return contextType === 'global'
+                        ? authZ.hasGlobalActions
+                        : authZ.hasLocalActions;
+                }
+
+                return authZ.hasActions;
+            }
+
+            return () => false;
+        }
+
+        function middlewareFactory(...permissions: string[]) {
+            function middleware(
+                request: Request,
+                response: Response,
+                next: NextFunction
+            ) {
+                const permissionChecker = getChecker(request.authZ);
+
+                const allowed = permissionChecker(...permissions);
+
+                if (!allowed) {
+                    response
+                        .status(403)
+                        .json(
+                            responseError(
+                                `You don't have permissions to access this resource.`
+                            )
+                        );
+
+                    return;
+                }
+
+                next();
+            }
+
+            return middleware;
+        }
+
+        return middlewareFactory;
+    }
+
     return {
-        middleware
+        middleware,
+        withPermissions: _withPermissions(),
+        withGlobalPermissions: _withPermissions('global'),
+        withLocalPermissions: _withPermissions('local'),
+        withActions: _withPermissions(null, 'action'),
+        withGlobalActions: _withPermissions('global', 'action'),
+        withLocalActions: _withPermissions('local', 'action')
     };
 }

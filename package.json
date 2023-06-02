@@ -10,6 +10,11 @@
   "files": [
     "lib/**/*"
   ],
+  "scripts": {
+    "build": "tsc",
+    "test": "",
+    "ci": "yarn install --frozen-lockfile"
+  },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.2.5",
