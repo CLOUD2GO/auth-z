@@ -13,7 +13,11 @@ type InternalRequest = {
 declare global {
     namespace Express {
         interface Request {
-            readonly authZ: RequestMethods;
+            /**
+             * AuthZ permissions handler, will be truthy if the `AuthZ.globalMiddleware`
+             * middleware has been added on the app request life-cycle.
+             */
+            readonly authZ?: RequestMethods;
         }
     }
 }
