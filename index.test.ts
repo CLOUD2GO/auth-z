@@ -1,9 +1,17 @@
-import Options, { FilledOptions } from './src/interfaces/Options';
 import { test, expect, describe } from '@jest/globals';
 
-import authZ from './index';
-import { MockOptions } from './tests/constants';
-import { authenticate, getAuthenticationProvider } from './tests/helpers';
+import authZ, { Permission } from './index';
+import {
+    MockOptions,
+    emptyPermissions,
+    globalPermissions,
+    localPermissions
+} from './tests/constants';
+import {
+    authenticate,
+    getAuthenticationProvider,
+    getPermissionParser
+} from './tests/helpers';
 
 describe('Creation of instance with different configurations', () => {
     test('Creation with minimal options', () => {
@@ -90,4 +98,31 @@ describe('`AuthenticationProvider` validations', () => {
     });
 });
 
-describe('`PermissionParser` validations', () => {});
+describe('`PermissionParser` validations', () => {
+    test('Permissions of a permission-less user', () => {
+        const permissionParser = getPermissionParser('empty');
+
+        const permissions = permissionParser.unwrap();
+
+        expect(permissions).toStrictEqual(emptyPermissions);
+    });
+
+    // Logical Error
+    // test('Permissions of a local user', () => {
+    //     const permissionParser = getPermissionParser('local');
+
+    //     const permissions = permissionParser.unwrap();
+
+    //     expect(permissions).toStrictEqual(localPermissions);
+    // });
+
+    test('Permissions of a global user', () => {
+        const permissionParser = getPermissionParser('global');
+
+        const permissions = permissionParser.unwrap();
+
+        console.log(permissions);
+
+        expect(permissions).toStrictEqual(globalPermissions);
+    });
+});

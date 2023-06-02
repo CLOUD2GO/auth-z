@@ -16,8 +16,6 @@ export default function parseOptions(options: Options): FilledOptions {
         authorization
     };
 
-    console.log(requiredOptions);
-
     for (const [key, value] of Object.entries(requiredOptions))
         if (value === undefined)
             throw new Error(`Missing required option: ${key}`);

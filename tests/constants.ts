@@ -1,4 +1,4 @@
-import { Options } from '../index';
+import { Options, Permission } from '../index';
 import Role from '../src/interfaces/Role';
 import { FilledOptions } from '../src/interfaces/Options';
 import { Request } from 'express';
@@ -15,17 +15,74 @@ export const globalRoles: Role[] = [
     }
 ];
 
+export const globalPermissions: Permission[] = [
+    {
+        context: 'global',
+        scope: 'User',
+        action: {
+            read: true,
+            write: true
+        },
+        resources: 'All'
+    },
+    {
+        context: 'global',
+        scope: 'Report',
+        action: {
+            read: true,
+            write: true
+        },
+        resources: 'All'
+    }
+];
+
 export const localRoles: Role[] = [
     {
         context: 'local',
         id: 'LOCAL',
         name: 'Local role',
         description: 'Local role',
-        permissions: ['User.ReadWrite.All', 'Report.ReadWrite.All']
+        permissions: [
+            'User.ReadWrite.All',
+            'Report.Read.All',
+            'Report.ReadWrite.someReport'
+        ]
+    }
+];
+
+export const localPermissions: Permission[] = [
+    {
+        context: 'local',
+        scope: 'User',
+        action: {
+            read: true,
+            write: true
+        },
+        resources: 'All'
+    },
+    {
+        context: 'local',
+        scope: 'Report',
+        action: {
+            read: true,
+            write: false
+        },
+        resources: 'All'
+    },
+    {
+        context: 'local',
+        scope: 'Report',
+        action: {
+            read: true,
+            write: true
+        },
+        resources: ['someReport']
     }
 ];
 
 export const emptyRoles: Role[] = [];
+
+export const emptyPermissions: Permission[] = [];
 
 export function mockRolesProvider(userId: string) {
     if (userId === 'global') return globalRoles;

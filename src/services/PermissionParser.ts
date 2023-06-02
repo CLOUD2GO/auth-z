@@ -1,8 +1,4 @@
-import Permission, {
-    AllResources,
-    AnyResource,
-    DefaultResource
-} from '../interfaces/Permission';
+import Permission from '../interfaces/Permission';
 import Role from '../interfaces/Role';
 import constants from '../util/constants';
 

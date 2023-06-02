@@ -2,8 +2,14 @@ import { getMockReq, getMockRes } from '@jest-mock/express';
 import AuthenticationProvider from '../src/services/AuthenticationProvider';
 import { Response } from 'express';
 import { MockOptions } from './constants';
+import { emptyRoles } from './constants';
+import { localRoles } from './constants';
+import { globalRoles } from './constants';
+import PermissionParser from '../src/services/PermissionParser';
 
-export function getAuthenticationProvider(user?: 'local' | 'global' | 'empty') {
+type User = 'local' | 'global' | 'empty';
+
+export function getAuthenticationProvider(user?: User) {
     const requestOptions = user
         ? {
               headers: {
@@ -27,7 +33,7 @@ export function getAuthenticationProvider(user?: 'local' | 'global' | 'empty') {
     };
 }
 
-export async function authenticate(user: 'local' | 'global' | 'empty') {
+export async function authenticate(user: User) {
     const mockRequest = getMockReq({
         headers: {
             'x-user': user
@@ -67,4 +73,17 @@ export async function authenticate(user: 'local' | 'global' | 'empty') {
     );
 
     return authenticationProvider;
+}
+
+export function getPermissionParser(user: User) {
+    const roles =
+        user === 'empty'
+            ? emptyRoles
+            : user === 'local'
+            ? localRoles
+            : globalRoles;
+
+    const permissionParser = PermissionParser(roles);
+
+    return permissionParser;
 }
