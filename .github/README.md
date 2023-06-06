@@ -179,28 +179,10 @@ interface RequestMethods {
 The package provides a set of middlewares to check for permissions in a route basis:
 
 ```js
-/**
- * Middleware to check if the user has the specified permissions on a route
- */
-authZ.withPermissions(...permissions);
-/**
- * Middleware to check if the user has the specified global permissions on a route
- */
-authZ.withGlobalPermissions(...globalPermissions);
-/**
- * Middleware to check if the user has the specified local permissions on a route
- */
-authZ.withLocalPermissions(...localPermissions);
-/**
- * Middleware to check if the user has the specified permission actions on a route
- */
-authZ.withActions(...permissionActions);
-/**
- * Middleware to check if the user has the specified global permission actions on a route
- */
-authZ.withGlobalActions(...globalPermissionActions);
-/**
- * Middleware to check if the user has the specified local permission actions on a route
- */
-authZ.withLocalActions(...localPermissionActions);
+authZ.withPermissions(...permissions); // Middleware to check if the user has the specified permissions on a route
+authZ.withGlobalPermissions(...globalPermissions); // Middleware to check if the user has the specified global permissions on a route
+authZ.withLocalPermissions(...localPermissions); // Middleware to check if the user has the specified local permissions on a route
+authZ.withActions(...permissionActions); // Middleware to check if the user has the specified permission actions on a route
+authZ.withGlobalActions(...globalPermissionActions); // Middleware to check if the user has the specified global permission actions on a route
+authZ.withLocalActions(...localPermissionActions); // Middleware to check if the user has the specified local permission actions on a route
 ```
