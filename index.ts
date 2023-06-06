@@ -187,12 +187,33 @@ export default function authZ(options: Options) {
     }
 
     return {
+        /**
+         * Global middleware, to create authentication and authorization on the application. **REQUIRED**
+         */
         middleware,
+        /**
+         * Middleware to check if the user has the specified permissions on a route
+         */
         withPermissions: _withPermissions(),
+        /**
+         * Middleware to check if the user has the specified global permissions on a route
+         */
         withGlobalPermissions: _withPermissions('global'),
+        /**
+         * Middleware to check if the user has the specified local permissions on a route
+         */
         withLocalPermissions: _withPermissions('local'),
+        /**
+         * Middleware to check if the user has the specified permission actions on a route
+         */
         withActions: _withPermissions(null, 'action'),
+        /**
+         * Middleware to check if the user has the specified global permission actions on a route
+         */
         withGlobalActions: _withPermissions('global', 'action'),
+        /**
+         * Middleware to check if the user has the specified local permission actions on a route
+         */
         withLocalActions: _withPermissions('local', 'action')
     };
 }

@@ -99,23 +99,23 @@ export function mockUserIdentifier(request: Request): string | null {
 export const MockOptions = {
     minimal: {
         authentication: {
-            secret: authenticationSecret
+            secret: authenticationSecret,
+            userIdentifier: mockUserIdentifier
         },
         authorization: {
             rolesProvider: mockRolesProvider
-        },
-        userIdentifier: mockUserIdentifier
+        }
     } as Options,
 
     full: {
         authentication: {
             secret: authenticationSecret,
-            expirationTimeSpan: 3600
+            expirationTimeSpan: 3600,
+            userIdentifier: mockUserIdentifier
         },
         authorization: {
             rolesProvider: mockRolesProvider
         },
-        userIdentifier: mockUserIdentifier,
         authenticationPath: '/authenticate'
     } as FilledOptions,
 

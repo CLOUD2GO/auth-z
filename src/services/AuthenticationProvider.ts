@@ -13,7 +13,7 @@ export default function (
     async function authenticate() {
         if (!options.authentication.secret)
             throw new Error('Authentication secret must be set');
-        const userId = await options.userIdentifier(request);
+        const userId = await options.authentication.userIdentifier(request);
 
         if (!userId) {
             response.status(401).json(responseError('Invalid user'));

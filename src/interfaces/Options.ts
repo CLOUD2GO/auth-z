@@ -5,14 +5,14 @@ import Role from './Role';
 
 export interface RequiredOptions {
     /**
-     * A function that returns a **user unique identifier**, agnostic to authentication method or
-     * information. This identifier will be used to generate the JWT for further requests.
-     */
-    userIdentifier: (request: Request) => Awaitable<string | null>;
-    /**
      * Details for the JWT authentication.
      */
     authentication: {
+        /**
+         * A function that returns a **user unique identifier**, agnostic to authentication method or
+         * information. This identifier will be used to generate the JWT for further requests.
+         */
+        userIdentifier: (request: Request) => Awaitable<string | null>;
         /**
          * The JWT signing secret, this value is considered the password of the application,
          * and should not be publicly available.

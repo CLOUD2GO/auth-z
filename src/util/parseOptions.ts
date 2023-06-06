@@ -3,15 +3,9 @@ import Options, { FilledOptions, OptionalOptions } from '../interfaces/Options';
 import constants from './constants';
 
 export default function parseOptions(options: Options): FilledOptions {
-    const {
-        userIdentifier,
-        authentication,
-        authorization,
-        ..._optionalOptions
-    } = options;
+    const { authentication, authorization, ..._optionalOptions } = options;
 
     const requiredOptions = {
-        userIdentifier,
         authentication,
         authorization
     };
