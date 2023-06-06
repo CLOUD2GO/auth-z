@@ -21,8 +21,12 @@ export default function (
             return;
         }
 
-        const expiresIn = toSeconds(
-            millisFromNow(seconds(options.authentication.expirationTimeSpan))
+        const expiresIn = Math.ceil(
+            toSeconds(
+                millisFromNow(
+                    seconds(options.authentication.expirationTimeSpan || 3600)
+                )
+            )
         );
 
         const tokenString = jwt.sign(

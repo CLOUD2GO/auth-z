@@ -4,22 +4,36 @@ import constants from '../util/constants';
 
 export type PermissionsHandler = ReturnType<typeof PermissionParser>;
 
+type PermissionContext = Permission['context'];
 type PermissionScope = string;
-type PermissionAction = 'Read' | 'Write' | 'ReadWrite';
+type PermissionAction = (typeof constants.authorization.actions)[number];
+type InternalPermissionAction = Exclude<PermissionAction, 'ReadWrite'>;
 type PermissionResource = Exclude<Permission['resources'], string[]> | string;
 
+type PermissionBlock = {
+    [action in InternalPermissionAction]: Permission['resources'];
+};
+
 export default function PermissionParser(roles: Role[]) {
-    const permissions = new Map<string, Permission>();
+    const permissions = new Map<string, PermissionBlock>();
 
     _populate();
 
     function _key(context: string, scope: string) {
-        return `${context}::[${scope}]`;
+        return `${context}${constants.authorization.keyGeneration.glue}${scope}`;
+    }
+
+    function _unKey(key: string): [PermissionContext, PermissionScope] {
+        const [context, scope] = key.split(
+            constants.authorization.keyGeneration.glue
+        );
+
+        return [context as PermissionContext, scope as PermissionScope];
     }
 
     function _parsePermission(
         permissionString: string
-    ): [PermissionScope, PermissionAction, PermissionResource] {
+    ): [PermissionScope, PermissionAction | 'ReadWrite', PermissionResource] {
         const [
             scope,
             action,
@@ -44,58 +58,144 @@ export default function PermissionParser(roles: Role[]) {
 
                 const key = _key(context, scope);
 
-                const currentPermission: Permission = permissions.get(key) ?? {
-                    context,
-                    scope,
-                    action: {
-                        read: false,
-                        write: false
-                    },
-                    resources: []
+                const currentPermission: PermissionBlock = permissions.get(
+                    key
+                ) ?? {
+                    Read: [],
+                    Write: []
                 };
 
-                switch (action) {
-                    case 'Read':
-                        currentPermission.action.read = true;
-                        break;
-                    case 'Write':
-                        currentPermission.action.write = true;
-                        break;
-                    case 'ReadWrite':
-                        currentPermission.action.read = true;
-                        currentPermission.action.write = true;
-                        break;
-                    default:
-                        // If invalid action, skip
-                        continue;
-                }
+                const _actions: InternalPermissionAction[] =
+                    action === 'ReadWrite' ? ['Read', 'Write'] : [action];
 
-                (currentPermission.resources as string[]).push(resource);
+                if (!constants.authorization.actions.includes(action)) continue;
+
+                if (
+                    resource === constants.authorization.resources.all ||
+                    resource === constants.authorization.resources.default
+                ) {
+                    _actions.forEach(
+                        action => (currentPermission[action] = resource)
+                    );
+                } else {
+                    _actions.forEach(
+                        action =>
+                            Array.isArray(currentPermission[action]) &&
+                            (currentPermission[action] as string[]).push(
+                                resource
+                            )
+                    );
+                }
 
                 permissions.set(key, currentPermission);
             }
 
             for (const permission of permissions.values()) {
-                if (
-                    permission.resources.includes(
-                        constants.authorization.resources.all
-                    )
-                ) {
-                    permission.resources =
-                        constants.authorization.resources.all;
-                    continue;
-                }
+                for (const action in permission) {
+                    const _key = action as InternalPermissionAction;
 
-                if (
-                    permission.resources.includes(
-                        constants.authorization.resources.default
-                    )
-                ) {
-                    permission.resources =
-                        constants.authorization.resources.default;
-                    continue;
+                    if (Array.isArray(permission[_key])) {
+                        if (
+                            permission[_key].includes(
+                                constants.authorization.resources.all
+                            )
+                        ) {
+                            permission[_key] =
+                                constants.authorization.resources.all;
+                        } else if (
+                            permission[_key].length > 0 &&
+                            (permission[_key] as string[]).every(
+                                resource =>
+                                    resource ===
+                                    constants.authorization.resources.default
+                            )
+                        ) {
+                            permission[_key] =
+                                constants.authorization.resources.default;
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    function _collapse(key: string, block: PermissionBlock): Permission[] {
+        const [context, scope] = _unKey(key);
+
+        if (equals(block.Read, block.Write))
+            return single(true, true, block.Read);
+
+        const permissions: Permission[] = [];
+
+        if (!equals(block.Read, constants.authorization.resources.empty)) {
+            permissions.push(
+                single(true, includes(block.Write, block.Read), block.Read)[0]
+            );
+        }
+
+        if (!equals(block.Write, constants.authorization.resources.empty)) {
+            permissions.push(
+                single(includes(block.Read, block.Write), true, block.Write)[0]
+            );
+        }
+
+        return permissions;
+
+        function single(
+            read: boolean,
+            write: boolean,
+            resources: Permission['resources']
+        ): Permission[] {
+            return [
+                {
+                    context,
+                    scope,
+                    action: {
+                        read,
+                        write
+                    },
+                    resources
+                }
+            ];
+        }
+
+        function equals(
+            a: Permission['resources'],
+            b: Permission['resources']
+        ): boolean {
+            if (typeof a === typeof b && typeof a === 'string' && a === b)
+                return true;
+
+            if (
+                Array.isArray(a) &&
+                Array.isArray(b) &&
+                a.length === b.length &&
+                b.every(item => a.includes(item))
+            )
+                return true;
+
+            return false;
+        }
+
+        function includes(
+            block: Permission['resources'],
+            toTest: Permission['resources']
+        ): boolean {
+            if (
+                block === constants.authorization.resources.all ||
+                block === constants.authorization.resources.default
+            )
+                return true;
+
+            if (Array.isArray(block)) {
+                if (Array.isArray(toTest)) {
+                    return toTest.every(resource => block.includes(resource));
+                }
+
+                return block.includes(toTest);
+            }
+
+            return false;
         }
     }
 
@@ -105,37 +205,33 @@ export default function PermissionParser(roles: Role[]) {
         resource: PermissionResource,
         context: Permission['context']
     ) {
-        const key = _key(context, scope);
-
-        if (!permissions.has(key)) return false;
-
-        const permission = permissions.get(key)!;
-
-        switch (action) {
-            case 'Read':
-                if (!permission.action.read) return false;
-                break;
-            case 'Write':
-                if (!permission.action.write) return false;
-                break;
-            case 'ReadWrite':
-                if (!permission.action.read || !permission.action.write)
-                    return false;
-                break;
-            default:
-                return false;
-        }
-
-        if (permission.resources === constants.authorization.resources.all)
-            return true;
-        if (
-            permission.resources ===
-                constants.authorization.resources.default &&
-            resource === constants.authorization.resources.default
-        )
-            return true;
-
         return false;
+        // const key = _key(context, scope);
+
+        // if (!permissions.has(key)) return false;
+
+        // const permission = permissions.get(key)!;
+
+        // // If action != ReadWrite, add ReadWrite to checking
+        // const actions: PermissionAction[] =
+        //     action === 'ReadWrite' ? [action] : [action, 'ReadWrite'];
+
+        // for (const action of actions) {
+        //     if (
+        //         // Permission exists and allows all resources
+        //         permission[action] === constants.authorization.resources.all ||
+        //         // Permission exists and does not require resources (default resource)
+        //         permission[action] ===
+        //             constants.authorization.resources.default ||
+        //         // Permission exists and have a list of resources
+        //         (Array.isArray(permission[action]) &&
+        //             (permission[action] as string[]).includes(resource))
+        //     )
+        //         return true;
+        // }
+
+        // // No permission had the action/resource requested
+        // return false;
     }
 
     function _checkAction(
@@ -143,34 +239,41 @@ export default function PermissionParser(roles: Role[]) {
         action: PermissionAction,
         context: Permission['context']
     ) {
-        const key = _key(context, scope);
+        return false;
+        // const key = _key(context, scope);
 
-        if (!permissions.has(key)) return false;
+        // if (!permissions.has(key)) return false;
 
-        const permission = permissions.get(key)!;
+        // const permission = permissions.get(key)!;
 
-        switch (action) {
-            case 'Read':
-                if (!permission.action.read) return false;
-                break;
-            case 'Write':
-                if (!permission.action.write) return false;
-                break;
-            case 'ReadWrite':
-                if (!permission.action.read || !permission.action.write)
-                    return false;
-                break;
-            default:
-                return false;
-        }
+        // // If action != ReadWrite, add ReadWrite to checking
+        // const actions: PermissionAction[] =
+        //     action === 'ReadWrite' ? [action] : [action, 'ReadWrite'];
 
-        return true;
+        // for (const action of actions) {
+        //     if (
+        //         // Permission exists and allows all resources
+        //         permission[action] === constants.authorization.resources.all ||
+        //         // Permission exists and does not require resources (default resource)
+        //         permission[action] ===
+        //             constants.authorization.resources.default ||
+        //         // Permission exists and have a list of resources
+        //         (Array.isArray(permission[action]) &&
+        //             (permission[action] as string[]).length > 0)
+        //     )
+        //         return true;
+        // }
+
+        // // No permission had the action requested
+        // return false;
     }
 
     function unwrap(): Permission[] {
         if (!permissions.size) return [];
 
-        const permissionsArray = Array.from(permissions.values());
+        const permissionsArray: Permission[] = Array.from(permissions).flatMap(
+            ([key, block]) => _collapse(key, block)
+        );
 
         return permissionsArray;
     }

@@ -21,7 +21,15 @@ export default {
         resources: {
             default: '__INTERNAL::[DEFAULT]__',
             any: '__INTERNAL::[ANY]__',
-            all: 'All'
+            all: 'All',
+            empty: [] as string[]
+        } as const,
+        scope: {
+            validationRegex: /^[A-Z0-9_-]+$/i
+        } as const,
+        actions: ['Read', 'Write', 'ReadWrite'] as const,
+        keyGeneration: {
+            glue: ':'
         } as const
     } as const
 } as const;

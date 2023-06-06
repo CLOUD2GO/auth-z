@@ -107,21 +107,18 @@ describe('`PermissionParser` validations', () => {
         expect(permissions).toStrictEqual(emptyPermissions);
     });
 
-    // Logical Error
-    // test('Permissions of a local user', () => {
-    //     const permissionParser = getPermissionParser('local');
+    test('Permissions of a local user', () => {
+        const permissionParser = getPermissionParser('local');
 
-    //     const permissions = permissionParser.unwrap();
+        const permissions = permissionParser.unwrap();
 
-    //     expect(permissions).toStrictEqual(localPermissions);
-    // });
+        expect(permissions).toStrictEqual(localPermissions);
+    });
 
     test('Permissions of a global user', () => {
         const permissionParser = getPermissionParser('global');
 
         const permissions = permissionParser.unwrap();
-
-        console.log(permissions);
 
         expect(permissions).toStrictEqual(globalPermissions);
     });
