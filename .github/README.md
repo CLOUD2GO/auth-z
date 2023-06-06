@@ -41,14 +41,14 @@ The configuration object uses the following interface:
 ```ts
 export interface Options {
     /**
-     * A function that returns a **user unique identifier**, agnostic to authentication method or
-     * information. This identifier will be used to generate the JWT for further requests.
-     */
-    userIdentifier: (request: Request) => Awaitable<string | null>;
-    /**
      * Details for the JWT authentication.
      */
     authentication: {
+        /**
+         * A function that returns a **user unique identifier**, agnostic to authentication method or
+         * information. This identifier will be used to generate the JWT for further requests.
+         */
+        userIdentifier: (request: Request) => Awaitable<string | null>;
         /**
          * The JWT signing secret, this value is considered the password of the application,
          * and should not be publicly available.
@@ -178,25 +178,25 @@ The package provides a set of middlewares to check for permissions in a route ba
 /**
  * Middleware to check if the user has the specified permissions on a route
  */
-authZ.withPermissions: _withPermissions(),
+authZ.withPermissions(...permissions);
 /**
  * Middleware to check if the user has the specified global permissions on a route
  */
-authZ.withGlobalPermissions: _withPermissions('global'),
+authZ.withGlobalPermissions(...globalPermissions);
 /**
  * Middleware to check if the user has the specified local permissions on a route
  */
-authZ.withLocalPermissions: _withPermissions('local'),
+authZ.withLocalPermissions(...localPermissions);
 /**
  * Middleware to check if the user has the specified permission actions on a route
  */
-authZ.withActions: _withPermissions(null, 'action'),
+authZ.withActions(...permissionActions);
 /**
  * Middleware to check if the user has the specified global permission actions on a route
  */
-authZ.withGlobalActions: _withPermissions('global', 'action'),
+authZ.withGlobalActions(...globalPermissionActions);
 /**
  * Middleware to check if the user has the specified local permission actions on a route
  */
-authZ.withLocalActions: _withPermissions('local', 'action')
+authZ.withLocalActions(...localPermissionActions);
 ```
