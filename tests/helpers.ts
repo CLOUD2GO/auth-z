@@ -34,33 +34,7 @@ export function getAuthenticationProvider(user?: User) {
 }
 
 export async function authenticate(user: User) {
-    const mockRequest = getMockReq({
-        headers: {
-            'x-user': user
-        }
-    });
-
-    const { token } = await new Promise<{ token: string; expiresIn: number }>(
-        resolve => {
-            const mockResponse = {
-                status(code: number) {
-                    return mockResponse;
-                },
-                json: (data: any) => {
-                    resolve(data);
-                    return mockResponse;
-                }
-            };
-
-            const authenticationProvider = AuthenticationProvider(
-                MockOptions.full,
-                mockRequest,
-                mockResponse as Response
-            );
-
-            authenticationProvider.authenticate();
-        }
-    );
+    const token = await getAuthToken(user);
 
     const authenticationProvider = AuthenticationProvider(
         MockOptions.full,
@@ -86,4 +60,71 @@ export function getPermissionParser(user: User) {
     const permissionParser = PermissionParser(roles);
 
     return permissionParser;
+}
+
+export async function getServerFlow(
+    user?: User,
+    path: string = '/test',
+    headers: Record<string, string> = {}
+) {
+    const { res: response, next } = getMockRes();
+
+    if (!user) {
+        return {
+            request: getMockReq({
+                path,
+                headers
+            }),
+            response,
+            next
+        };
+    }
+
+    const token = await getAuthToken(user);
+
+    const request = getMockReq({
+        path,
+        headers: {
+            authorization: `Bearer ${token}`,
+            ...headers
+        }
+    });
+
+    return {
+        request,
+        response,
+        next
+    };
+}
+
+async function getAuthToken(user: User) {
+    const mockRequest = getMockReq({
+        headers: {
+            'x-user': user
+        }
+    });
+
+    const { token } = await new Promise<{ token: string; expiresIn: number }>(
+        resolve => {
+            const mockResponse = {
+                status(_: number) {
+                    return mockResponse;
+                },
+                json: (data: any) => {
+                    resolve(data);
+                    return mockResponse;
+                }
+            };
+
+            const authenticationProvider = AuthenticationProvider(
+                MockOptions.full,
+                mockRequest,
+                mockResponse as Response
+            );
+
+            authenticationProvider.authenticate();
+        }
+    );
+
+    return token;
 }

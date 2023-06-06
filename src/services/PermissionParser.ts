@@ -205,33 +205,38 @@ export default function PermissionParser(roles: Role[]) {
         resource: PermissionResource,
         context: Permission['context']
     ) {
-        return false;
-        // const key = _key(context, scope);
+        const key = _key(context, scope);
 
-        // if (!permissions.has(key)) return false;
+        if (!permissions.has(key)) return false;
 
-        // const permission = permissions.get(key)!;
+        const permission = permissions.get(key)!;
 
-        // // If action != ReadWrite, add ReadWrite to checking
-        // const actions: PermissionAction[] =
-        //     action === 'ReadWrite' ? [action] : [action, 'ReadWrite'];
+        // If action == ReadWrite, replace to Read and Write
+        const actions: InternalPermissionAction[] =
+            action === 'ReadWrite' ? ['Read', 'Write'] : [action];
 
-        // for (const action of actions) {
-        //     if (
-        //         // Permission exists and allows all resources
-        //         permission[action] === constants.authorization.resources.all ||
-        //         // Permission exists and does not require resources (default resource)
-        //         permission[action] ===
-        //             constants.authorization.resources.default ||
-        //         // Permission exists and have a list of resources
-        //         (Array.isArray(permission[action]) &&
-        //             (permission[action] as string[]).includes(resource))
-        //     )
-        //         return true;
-        // }
+        for (const action of actions) {
+            // Permission exists and allows all resources
+            if (permission[action] === constants.authorization.resources.all)
+                continue;
 
-        // // No permission had the action/resource requested
-        // return false;
+            // Permission exists and does not require resources (default resource)
+            if (
+                permission[action] === constants.authorization.resources.default
+            )
+                continue;
+
+            // Permission exists and have a list of resources in which includes the requested resource
+            if (
+                Array.isArray(permission[action]) &&
+                (permission[action] as string[]).includes(resource)
+            )
+                continue;
+
+            return false;
+        }
+
+        return true;
     }
 
     function _checkAction(
@@ -239,33 +244,38 @@ export default function PermissionParser(roles: Role[]) {
         action: PermissionAction,
         context: Permission['context']
     ) {
-        return false;
-        // const key = _key(context, scope);
+        const key = _key(context, scope);
 
-        // if (!permissions.has(key)) return false;
+        if (!permissions.has(key)) return false;
 
-        // const permission = permissions.get(key)!;
+        const permission = permissions.get(key)!;
 
-        // // If action != ReadWrite, add ReadWrite to checking
-        // const actions: PermissionAction[] =
-        //     action === 'ReadWrite' ? [action] : [action, 'ReadWrite'];
+        // If action == ReadWrite, replace to Read and Write
+        const actions: InternalPermissionAction[] =
+            action === 'ReadWrite' ? ['Read', 'Write'] : [action];
 
-        // for (const action of actions) {
-        //     if (
-        //         // Permission exists and allows all resources
-        //         permission[action] === constants.authorization.resources.all ||
-        //         // Permission exists and does not require resources (default resource)
-        //         permission[action] ===
-        //             constants.authorization.resources.default ||
-        //         // Permission exists and have a list of resources
-        //         (Array.isArray(permission[action]) &&
-        //             (permission[action] as string[]).length > 0)
-        //     )
-        //         return true;
-        // }
+        for (const action of actions) {
+            // Permission exists and allows all resources
+            if (permission[action] === constants.authorization.resources.all)
+                continue;
 
-        // // No permission had the action requested
-        // return false;
+            // Permission exists and does not require resources (default resource)
+            if (
+                permission[action] === constants.authorization.resources.default
+            )
+                continue;
+
+            // Permission exists and have a non-empty list of resources
+            if (
+                Array.isArray(permission[action]) &&
+                (permission[action] as string[]).length > 0
+            )
+                continue;
+
+            return false;
+        }
+
+        return true;
     }
 
     function unwrap(): Permission[] {
