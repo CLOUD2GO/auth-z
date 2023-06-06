@@ -178,7 +178,9 @@ describe('`AuthZ` global middleware validations', () => {
     test('Unauthorized user flow on `/authenticate` endpoint with invalid data', async () => {
         const { request, response, next } = await getServerFlow(
             undefined,
-            '/authenticate'
+            '/authenticate',
+            undefined,
+            'POST'
         );
 
         await instance.middleware(request, response, next);
@@ -195,7 +197,8 @@ describe('`AuthZ` global middleware validations', () => {
             '/authenticate',
             {
                 'x-user': 'empty'
-            }
+            },
+            'POST'
         );
 
         await instance.middleware(request, response, next);

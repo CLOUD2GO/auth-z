@@ -111,12 +111,13 @@ export const MockOptions = {
         authentication: {
             secret: authenticationSecret,
             expirationTimeSpan: 3600,
-            userIdentifier: mockUserIdentifier
+            userIdentifier: mockUserIdentifier,
+            path: '/authenticate',
+            method: 'POST'
         },
         authorization: {
             rolesProvider: mockRolesProvider
-        },
-        authenticationPath: '/authenticate'
+        }
     } as FilledOptions,
 
     invalid: {} as Options

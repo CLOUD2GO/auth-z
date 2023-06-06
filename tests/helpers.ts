@@ -65,7 +65,8 @@ export function getPermissionParser(user: User) {
 export async function getServerFlow(
     user?: User,
     path: string = '/test',
-    headers: Record<string, string> = {}
+    headers: Record<string, string> = {},
+    method: string = 'GET'
 ) {
     const { res: response, next } = getMockRes();
 
@@ -73,7 +74,8 @@ export async function getServerFlow(
         return {
             request: getMockReq({
                 path,
-                headers
+                headers,
+                method
             }),
             response,
             next
@@ -86,7 +88,8 @@ export async function getServerFlow(
         path,
         headers: {
             authorization: `Bearer ${token}`,
-            ...headers
+            ...headers,
+            method
         }
     });
 

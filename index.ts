@@ -38,7 +38,11 @@ export default function authZ(options: Options) {
             response
         );
 
-        if (request.path === _options.authenticationPath) {
+        if (
+            request.path === _options.authentication.path &&
+            request.method.toUpperCase() ===
+                _options.authentication.method.toUpperCase()
+        ) {
             await authProvider.authenticate();
 
             return;

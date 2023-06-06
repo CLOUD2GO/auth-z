@@ -28,11 +28,15 @@ export interface RequiredOptions {
 }
 
 export interface OptionalOptions {
-    /**
-     * The path to the authentication endpoint, defaults to `/authenticate`.
-     */
-    authenticationPath: string;
     authentication: {
+        /**
+         * The path to the authentication endpoint, defaults to `/authenticate`.
+         */
+        path: string;
+        /**
+         * The HTTP method to be used on the authentication endpoint, defaults to `POST`.
+         */
+        method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
         /**
          * The JWT expiration time span, in **seconds**, defaults to `3600`, or 1 hour.
          */

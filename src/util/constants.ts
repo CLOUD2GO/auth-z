@@ -1,9 +1,10 @@
 import { OptionalOptions } from '../interfaces/Options';
 
 const defaultOptions: OptionalOptions = {
-    authenticationPath: '/authenticate',
     authentication: {
-        expirationTimeSpan: 3600
+        expirationTimeSpan: 3600,
+        method: 'POST',
+        path: '/authenticate'
     }
 };
 
