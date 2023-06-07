@@ -1,3 +1,8 @@
+/**
+ * This file contains tests for all the services within the library,
+ * including `AuthZ`
+ */
+
 import { test, expect, describe } from '@jest/globals';
 
 import authZ from './index';
@@ -176,12 +181,10 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Unauthorized user flow on `/authenticate` endpoint with invalid data', async () => {
-        const { request, response, next } = await getServerFlow(
-            undefined,
-            '/authenticate',
-            undefined,
-            'POST'
-        );
+        const { request, response, next } = await getServerFlow({
+            path: '/authenticate',
+            method: 'POST'
+        });
 
         await instance.middleware(request, response, next);
 
@@ -192,14 +195,13 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Unauthorized user flow on `/authenticate` endpoint with valid credentials', async () => {
-        const { request, response, next } = await getServerFlow(
-            undefined,
-            '/authenticate',
-            {
+        const { request, response, next } = await getServerFlow({
+            path: '/authenticate',
+            method: 'POST',
+            headers: {
                 'x-user': 'empty'
-            },
-            'POST'
-        );
+            }
+        });
 
         await instance.middleware(request, response, next);
 
@@ -212,7 +214,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Empty user flow on authorized-only endpoint', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -221,7 +225,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Local user flow on authorized-only endpoint', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -230,7 +236,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Global user flow on authorized-only endpoint', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -239,7 +247,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Empty user flow permissions check', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -260,7 +270,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Local user flow permissions check', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -281,7 +293,9 @@ describe('`AuthZ` global middleware validations', () => {
     });
 
     test('Empty user flow permissions check', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -306,7 +320,9 @@ describe('`AuthZ` independent middleware validations', () => {
     const instance = authZ(MockOptions.minimal);
 
     test('Empty user flow with `withActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -321,7 +337,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -332,7 +350,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -343,7 +363,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Empty user flow with `withLocalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -358,7 +380,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withLocalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -369,7 +393,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withLocalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -384,7 +410,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Empty user flow with `withGlobalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -399,7 +427,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withGlobalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -414,7 +444,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withGlobalActions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -425,7 +457,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Empty user flow with `withPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -440,7 +474,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -451,7 +487,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -462,7 +500,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Empty user flow with `withLocalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -477,7 +517,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withLocalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -488,7 +530,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withLocalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -503,7 +547,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Empty user flow with `withGlobalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('empty');
+        const { request, response, next } = await getServerFlow({
+            user: 'empty'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -522,7 +568,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Local user flow with `withGlobalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('local');
+        const { request, response, next } = await getServerFlow({
+            user: 'local'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();
@@ -541,7 +589,9 @@ describe('`AuthZ` independent middleware validations', () => {
     });
 
     test('Global user flow with `withGlobalPermissions` middleware', async () => {
-        const { request, response, next } = await getServerFlow('global');
+        const { request, response, next } = await getServerFlow({
+            user: 'global'
+        });
 
         await instance.middleware(request, response, next);
         expect(request.authZ).toBeDefined();

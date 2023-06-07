@@ -20,6 +20,104 @@ npm install @cloud2go/auth-z
 
 ## Usage
 
+### Types
+
+The package uses internally some helper types:
+
+```ts
+/**
+ * Represents a value that can be `null`
+ */
+type Nullable<T> = T | null;
+
+/**
+ * Represents the return type of a function that can be `sync` or `async`
+ */
+type Awaitable<T = void> = T | Promise<T>;
+
+/**
+ * Default resource applied to a permission when no resource is specified,
+ * for example: `User.ReadWrite` will resolve to `User.ReadWrite.<DefaultResource>`
+ */
+export type DefaultResource = typeof constants.authorization.resources.default;
+/**
+ * The resource string that represents a wildcard for all resources,
+ * for example: `User.ReadWrite.<AllResources>` will match `User.ReadWrite.Admin`
+ * and `User.ReadWrite.Reader`
+ */
+export type AllResources = typeof constants.authorization.resources.all;
+```
+
+Also, some interfaces are exported for convenience, as they are returned by some of the package methods:
+
+```ts
+/**
+ * Represents a `AuthZ` user role, containing information about what
+ * the user can do within the application
+ */
+interface Role {
+    /**
+     * The unique identifier of the role
+     */
+    id: string;
+    /**
+     * Display name of the role
+     */
+    name: string;
+    /**
+     * Optional description of the role
+     */
+    description?: string;
+    /**
+     * Array of string representation of the permissions of the role,
+     * for example: `User.ReadWrite.All`
+     */
+    permissions: string[];
+    /**
+     * The context of the role, can be `global` or `local`
+     */
+    context: 'global' | 'local';
+}
+
+/**
+ * Represents a role permission, which is used to define the allowed actions
+ */
+interface Permission {
+    /**
+     * The context of the permission, same as the role context,
+     * can be `global` or `local`
+     */
+    context: Role['context'];
+    /**
+     * The scope of the permission, for example: In `User.ReadWrite.All`,
+     * the scope is `User`
+     */
+    scope: string;
+    /**
+     * The action capabilities of the permission, for example: In `User.Read.All`,
+     * the action will be `{ read: true, write: false }`
+     */
+    action: {
+        /**
+         * Whether the permission allows reading
+         */
+        read: boolean;
+        /**
+         * Whether the permission allows writing
+         */
+        write: boolean;
+    };
+    /**
+     * The resources that the permission applies to, for example: In `User.ReadWrite.All`,
+     * the permission can affect any resource, but in `User.ReadWrite.Admin`, the permission
+     * only applies to the `Admin` resource. The default resource is used when no resources
+     * are defined in the permission, for example: `User.ReadWrite` will resolve to
+     * `User.ReadWrite.<DefaultResource>`
+     */
+    resources: string[] | AllResources | DefaultResource;
+}
+```
+
 ### Importing and configuration
 
 Import the package and configure it with your `express` app:
@@ -39,6 +137,9 @@ const AuthZ = require('@cloud2go/auth-z').default;
 The configuration object uses the following interface:
 
 ```ts
+/**
+ * Represents the options to create an `AuthZ` instance
+ */
 export interface Options {
     /**
      * Details for the JWT authentication.
@@ -57,11 +158,11 @@ export interface Options {
         /**
          * The path to the authentication endpoint, defaults to `/authenticate`.
          */
-        path: string;
+        path?: string;
         /**
          * The HTTP method to be used on the authentication endpoint, defaults to `POST`.
          */
-        method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+        method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
         /**
          * The JWT expiration time span, in **seconds**, defaults to `3600`, or 1 hour.
          */

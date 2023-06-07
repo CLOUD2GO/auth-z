@@ -1,10 +1,16 @@
 import { Options, Permission } from '../index';
 import Role from '../src/interfaces/Role';
 import { FilledOptions } from '../src/interfaces/Options';
-import { Request } from 'express';
+import { mockRolesProvider, mockUserIdentifier } from './helpers';
 
+/**
+ * Mock authentication secret for `JWT` authentication
+ */
 const authenticationSecret = '__SECRET__';
 
+/**
+ * Mock `Role` Array with a single `Role` within the `global` context
+ */
 export const globalRoles: Role[] = [
     {
         context: 'global',
@@ -15,6 +21,10 @@ export const globalRoles: Role[] = [
     }
 ];
 
+/**
+ * Mock `Permission` Array with ter expected parsed `Permission` array from the
+ * `globalRoles` array
+ */
 export const globalPermissions: Permission[] = [
     {
         context: 'global',
@@ -36,6 +46,9 @@ export const globalPermissions: Permission[] = [
     }
 ];
 
+/**
+ * Mock `Role` Array with a single `Role` within the `local` context
+ */
 export const localRoles: Role[] = [
     {
         context: 'local',
@@ -50,6 +63,10 @@ export const localRoles: Role[] = [
     }
 ];
 
+/**
+ * Mock `Permission` Array with ter expected parsed `Permission` array from the
+ * `localRoles` array
+ */
 export const localPermissions: Permission[] = [
     {
         context: 'local',
@@ -80,23 +97,25 @@ export const localPermissions: Permission[] = [
     }
 ];
 
+/**
+ * Mock `Role` Array with no `Role` within it, mocking a permission-less
+ * user
+ */
 export const emptyRoles: Role[] = [];
 
+/**
+ * Mock `Permission` Array with the expected parsed `Permission` array from the
+ * `emptyRoles` array
+ */
 export const emptyPermissions: Permission[] = [];
 
-export function mockRolesProvider(userId: string) {
-    if (userId === 'global') return globalRoles;
-    if (userId === 'local') return localRoles;
-
-    return emptyRoles;
-}
-
-export function mockUserIdentifier(request: Request): string | null {
-    const user = request.headers['x-user'] as string;
-    return user ?? null;
-}
-
+/**
+ * Mock `Options` dictionary with different filling levels
+ */
 export const MockOptions = {
+    /**
+     * Mock `Options` object with only the required options
+     */
     minimal: {
         authentication: {
             secret: authenticationSecret,
@@ -107,6 +126,9 @@ export const MockOptions = {
         }
     } as Options,
 
+    /**
+     * Mock `Options` object with all the options filled
+     */
     full: {
         authentication: {
             secret: authenticationSecret,
@@ -120,5 +142,9 @@ export const MockOptions = {
         }
     } as FilledOptions,
 
+    /**
+     * Mock `Options` object with no properties filled, mocking an invalid
+     * `Options` object
+     */
     invalid: {} as Options
 } as const;

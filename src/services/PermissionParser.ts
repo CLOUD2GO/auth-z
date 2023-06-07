@@ -6,7 +6,8 @@ export type PermissionsHandler = ReturnType<typeof PermissionParser>;
 
 type PermissionContext = Permission['context'];
 type PermissionScope = string;
-type PermissionAction = (typeof constants.authorization.actions)[number];
+type PermissionAction =
+    (typeof constants.authorization.actions.allowedValues)[number];
 type InternalPermissionAction = Exclude<PermissionAction, 'ReadWrite'>;
 type PermissionResource = Exclude<Permission['resources'], string[]> | string;
 
@@ -68,7 +69,12 @@ export default function PermissionParser(roles: Role[]) {
                 const _actions: InternalPermissionAction[] =
                     action === 'ReadWrite' ? ['Read', 'Write'] : [action];
 
-                if (!constants.authorization.actions.includes(action)) continue;
+                if (
+                    !constants.authorization.actions.allowedValues.includes(
+                        action
+                    )
+                )
+                    continue;
 
                 if (
                     resource === constants.authorization.resources.all ||

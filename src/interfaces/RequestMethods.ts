@@ -1,6 +1,9 @@
 import Permission from './Permission';
 import Role from './Role';
-
+/**
+ * Object injected into the `Request.authZ` property, containing methods
+ * to deal with permissions and roles
+ */
 interface RequestMethods {
     /**
      * Checks if the current user has the given permissions in any context.
