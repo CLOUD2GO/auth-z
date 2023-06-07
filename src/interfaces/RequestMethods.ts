@@ -7,6 +7,7 @@ import Role from './Role';
 interface RequestMethods {
     /**
      * Checks if the current user has the given permissions in any context.
+     * Checks for fully qualified permissions, such as `Scope.Action.?Resource`
      */
     hasPermissions: (...permissions: string[]) => boolean;
     /**

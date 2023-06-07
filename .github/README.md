@@ -220,6 +220,7 @@ Every request will now have a `authZ` property, with the following interface:
 interface RequestMethods {
     /**
      * Checks if the current user has the given permissions in any context.
+     * Checks for fully qualified permissions, such as `Scope.Action.?Resource`
      */
     hasPermissions: (...permissions: string[]) => boolean;
     /**

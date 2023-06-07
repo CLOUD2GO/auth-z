@@ -301,4 +301,4 @@ export default function AuthZ(options: Options) {
 /**
  * Public interfaces exported by the library
  */
-export { Options, Permission, Role };
+export { Options, Permission, Role, RequestMethods };
