@@ -60,6 +60,10 @@ interface RequestMethods {
      * Get a **copy** of the current user permissions in the global context.
      */
     getGlobalPermissions: () => Permission[];
+    /**
+     * Get the current user identifier.
+     */
+    getUserIdentifier: () => string;
 }
 
 export default RequestMethods;
