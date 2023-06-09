@@ -256,6 +256,7 @@ describe('`AuthZ` global middleware validations', () => {
 
         expect(next).toHaveBeenCalledTimes(1);
 
+        expect(request.authZ.getUserIdentifier()).toBe('empty');
         expect(request.authZ.getPermissions()).toEqual(emptyPermissions);
         expect(request.authZ.getLocalPermissions()).toEqual(emptyPermissions);
         expect(request.authZ.getGlobalPermissions()).toEqual(emptyPermissions);
@@ -279,6 +280,7 @@ describe('`AuthZ` global middleware validations', () => {
 
         expect(next).toHaveBeenCalledTimes(1);
 
+        expect(request.authZ.getUserIdentifier()).toBe('local');
         expect(request.authZ.getPermissions()).toEqual(localPermissions);
         expect(request.authZ.getLocalPermissions()).toEqual(localPermissions);
         expect(request.authZ.getGlobalPermissions()).toEqual(emptyPermissions);
@@ -302,6 +304,7 @@ describe('`AuthZ` global middleware validations', () => {
 
         expect(next).toHaveBeenCalledTimes(1);
 
+        expect(request.authZ.getUserIdentifier()).toBe('global');
         expect(request.authZ.getPermissions()).toEqual(globalPermissions);
         expect(request.authZ.getLocalPermissions()).toEqual(emptyPermissions);
         expect(request.authZ.getGlobalPermissions()).toEqual(globalPermissions);

@@ -178,6 +178,10 @@ export default function AuthZ(options: Options) {
                 return localPermissionActions.every(
                     permissionParser.checkActionLocal
                 );
+            },
+
+            getUserIdentifier() {
+                return userId;
             }
         };
 
@@ -301,4 +305,4 @@ export default function AuthZ(options: Options) {
 /**
  * Public interfaces exported by the library
  */
-export { Options, Permission, Role };
+export { Options, Permission, Role, RequestMethods };

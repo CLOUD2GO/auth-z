@@ -7,6 +7,7 @@ import Role from './Role';
 interface RequestMethods {
     /**
      * Checks if the current user has the given permissions in any context.
+     * Checks for fully qualified permissions, such as `Scope.Action.?Resource`
      */
     hasPermissions: (...permissions: string[]) => boolean;
     /**
@@ -59,6 +60,10 @@ interface RequestMethods {
      * Get a **copy** of the current user permissions in the global context.
      */
     getGlobalPermissions: () => Permission[];
+    /**
+     * Get the current user identifier.
+     */
+    getUserIdentifier: () => string;
 }
 
 export default RequestMethods;
