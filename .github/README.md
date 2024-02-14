@@ -10,9 +10,11 @@ Sometimes managing permissions of an application can be difficult. This package 
 
 You still have the control of which actions, resources and scopes are allowed, but now with a simple `app.use` you can lock everything behind authentication and check if the user has the required permissions on any controller, or using a permission-specific middleware on a route basis.
 
+For a full working example, check out [this repository]().
+
 ## Installation
 
-Install this package on your [`express`](https://expressjs.com/pt-br/) project:
+Install this package on your [`express`](https://expressjs.com) project:
 
 ```bash
 npm install @cloud2go/auth-z
