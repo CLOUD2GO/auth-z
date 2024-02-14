@@ -14,7 +14,7 @@
         "build": "tsc",
         "test": "jest",
         "format": "prettier -w --config .prettierrc --ignore-path .gitignore .",
-        "ci": "yarn install --frozen-lockfile",
+        "ci": "pnpm install --frozen-lockfile",
         "prepare": "husky install"
     },
     "devDependencies": {
@@ -30,7 +30,7 @@
         "typescript": "^5.3.3"
     },
     "engines": {
-        "node": ">=17.0.0"
+        "node": ">=18.0.0"
     },
     "dependencies": {
         "fill-object": "^0.1.3",
