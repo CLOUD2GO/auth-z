@@ -25,7 +25,8 @@ jobs:
             - name: Get PNPM Store
               shell: bash
               run: |
-                  echo "export STORE_PATH=$(pnpm store path --silent)"
+                  export STORE_PATH="$(pnpm store path --silent)"
+                  echo "$STORE_PATH"
 
             - name: Setup PNPM Cache
               uses: actions/cache@v3
@@ -37,6 +38,5 @@ jobs:
             - run: pnpm install --frozen-lockfile
             - run: pnpm test
             - run: pnpm build
+            - run: pnpm set "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}"
             - run: pnpm publish --no-git-checks
-              env:
-                  NPM_TOKEN: ${{ secrets.npm_token }}
