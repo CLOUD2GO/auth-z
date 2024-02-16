@@ -42,7 +42,9 @@ declare global {
  * express application, allowing `JWT` authentication and complex authorization
  * handling
  */
-export default function AuthZ(options: Options) {
+export default function AuthZ<TUserIndentifier = string>(
+    options: Options<TUserIndentifier>
+) {
     /**
      * Parsed options, with default values for missing properties
      */
@@ -82,7 +84,7 @@ export default function AuthZ(options: Options) {
             return;
         }
 
-        let userId: string;
+        let userId: TUserIndentifier;
 
         /**
          * Validate the `JWT` token, and get the user identifier from the
@@ -180,8 +182,8 @@ export default function AuthZ(options: Options) {
                 );
             },
 
-            getUserIdentifier() {
-                return userId;
+            getUserIdentifier<TUserIndentifier = unknown>() {
+                return userId as unknown as TUserIndentifier;
             }
         };
 
