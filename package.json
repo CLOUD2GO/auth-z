@@ -1,6 +1,6 @@
 {
     "name": "@cloud2go/auth-z",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Authorization package with complex permission handling",
     "main": "lib/index.js",
     "repository": "https://github.com/Giancarl021/auth-z.git",
