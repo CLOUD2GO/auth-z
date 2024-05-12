@@ -1,6 +1,6 @@
 {
     "name": "@cloud2go/auth-z",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Authorization package with complex permission handling",
     "main": "lib/index.js",
     "repository": "https://github.com/Giancarl021/auth-z.git",
@@ -14,20 +14,19 @@
         "build": "tsc",
         "test": "jest",
         "format": "prettier -w --config .prettierrc --ignore-path .gitignore .",
-        "ci": "pnpm install --frozen-lockfile",
         "prepare": "husky install"
     },
     "devDependencies": {
         "@jest-mock/express": "^2.0.2",
         "@jest/globals": "^29.7.0",
         "@types/express": "^4.17.21",
-        "@types/jsonwebtoken": "^9.0.5",
-        "@types/node": "^20.11.17",
-        "husky": "^8.0.3",
+        "@types/jsonwebtoken": "^9.0.6",
+        "@types/node": "^20.12.11",
+        "husky": "^9.0.11",
         "jest": "^29.7.0",
-        "prettier": "^2.8.8",
+        "prettier": "^3.2.5",
         "ts-jest": "^29.1.2",
-        "typescript": "^5.3.3"
+        "typescript": "^5.4.5"
     },
     "engines": {
         "node": ">=18.0.0"
@@ -37,6 +36,6 @@
         "jsonwebtoken": "^9.0.2"
     },
     "peerDependencies": {
-        "express": "^4.18.2"
+        "express": "^4.19.2"
     }
 }

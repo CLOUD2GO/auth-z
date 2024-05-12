@@ -163,8 +163,8 @@ export function getPermissionParser(user: User) {
         user === 'empty'
             ? emptyRoles
             : user === 'local'
-            ? localRoles
-            : globalRoles;
+              ? localRoles
+              : globalRoles;
 
     /**
      * `PermissionParser` service instance

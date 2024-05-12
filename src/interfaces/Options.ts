@@ -6,7 +6,7 @@ import Role from './Role';
 /**
  * Represents the required part of the options to create an `AuthZ` instance
  */
-export interface RequiredOptions<T = string> {
+export interface RequiredOptions<TUserIdentifier = string> {
     /**
      * Details for the JWT authentication.
      */
@@ -15,7 +15,9 @@ export interface RequiredOptions<T = string> {
          * A function that returns a **user unique identifier**, agnostic to authentication method or
          * information. This identifier will be used to generate the JWT for further requests.
          */
-        userIdentifier: (request: Request) => Awaitable<Nullable<T>>;
+        userIdentifier: (
+            request: Request
+        ) => Awaitable<Nullable<TUserIdentifier>>;
         /**
          * The JWT signing secret, this value is considered the password of the application,
          * and should not be publicly available.
@@ -26,7 +28,7 @@ export interface RequiredOptions<T = string> {
         /**
          * A function that returns the roles of a given user, identified by the `userIdentifier` callback.
          */
-        rolesProvider: (userId: T) => Awaitable<Role[]>;
+        rolesProvider: (userId: TUserIdentifier) => Awaitable<Role[]>;
     };
 }
 /**

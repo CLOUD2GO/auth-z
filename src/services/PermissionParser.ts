@@ -338,13 +338,13 @@ export default function PermissionParser(roles: Role[]) {
 
     function checkContext(
         permissionString: string
-    ): Permission['context'] | 'mixed' | 'none' {
+    ): Permission['context'] | 'both' | 'none' {
         const [scope] = _parsePermission(permissionString);
 
         const hasLocal = permissions.has(_key('local', scope));
         const hasGlobal = permissions.has(_key('global', scope));
 
-        if (hasLocal && hasGlobal) return 'mixed';
+        if (hasLocal && hasGlobal) return 'both';
         if (hasLocal) return 'local';
         if (hasGlobal) return 'global';
 
