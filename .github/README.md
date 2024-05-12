@@ -151,7 +151,7 @@ export interface Options {
          * A function that returns a **user unique identifier**, agnostic to authentication method or
          * information. This identifier will be used to generate the JWT for further requests.
          */
-        userIdentifier: (request: Request) => Awaitable<string | null>;
+        userIdentifier: (request: Request) => Awaitable<Nullable<string>>;
         /**
          * The JWT signing secret, this value is considered the password of the application,
          * and should not be publicly available.
@@ -207,7 +207,7 @@ import AuthZ from '@cloud2go/auth-z';
 
 const app = express();
 
-const authZ = AuthZ(...configuration);
+const authZ = AuthZ(configuration);
 
 app.use(authZ.middleware);
 ```
@@ -258,7 +258,7 @@ interface RequestMethods {
      */
     getPermissionContext: (
         permission: string
-    ) => Role['context'] | 'both' | 'mixed' | 'none';
+    ) => Role['context'] | 'both' | 'none';
     /**
      * Get a **copy** of the current user roles.
      */
