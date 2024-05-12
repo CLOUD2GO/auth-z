@@ -142,7 +142,7 @@ The configuration object uses the following interface:
 /**
  * Represents the options to create an `AuthZ` instance
  */
-export interface Options {
+export interface Options<TUserIdentifier = string> {
     /**
      * Details for the JWT authentication.
      */
@@ -151,7 +151,9 @@ export interface Options {
          * A function that returns a **user unique identifier**, agnostic to authentication method or
          * information. This identifier will be used to generate the JWT for further requests.
          */
-        userIdentifier: (request: Request) => Awaitable<Nullable<string>>;
+        userIdentifier: (
+            request: Request
+        ) => Awaitable<Nullable<TUserIdentifier>>;
         /**
          * The JWT signing secret, this value is considered the password of the application,
          * and should not be publicly available.
@@ -174,7 +176,7 @@ export interface Options {
         /**
          * A function that returns the roles of a given user, identified by the `userIdentifier` callback.
          */
-        rolesProvider: (userId: string) => Awaitable<Role[]>;
+        rolesProvider: (userId: TUserIdentifier) => Awaitable<Role[]>;
     };
 }
 ```
@@ -278,7 +280,7 @@ interface RequestMethods {
     /**
      * Get the current user identifier.
      */
-    getUserIdentifier: () => string;
+    getUserIdentifier: <TUserIdentifier = unknown>() => TUserIdentifier;
 }
 ```
 

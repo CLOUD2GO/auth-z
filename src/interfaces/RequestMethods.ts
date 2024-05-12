@@ -63,7 +63,7 @@ interface RequestMethods {
     /**
      * Get the current user identifier.
      */
-    getUserIdentifier: () => string;
+    getUserIdentifier: <TUserIdentifier = unknown>() => TUserIdentifier;
 }
 
 export default RequestMethods;

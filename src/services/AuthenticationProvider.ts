@@ -8,8 +8,8 @@ import responseError from '../util/responseError';
  * within the application. It provides resources to authenticate and validate
  * an authenticated user
  */
-export default function (
-    options: FilledOptions,
+export default function AuthenticationProvider<TUserIdentifier>(
+    options: FilledOptions<TUserIdentifier>,
     request: Request,
     response: Response
 ) {
@@ -78,7 +78,7 @@ export default function (
      * Authentication validation method, used when a authenticated user
      * makes a request to the application
      */
-    function validate(): string {
+    function validate(): TUserIdentifier {
         /**
          * Get the `Authorization` header from the request, which should
          * contain the `JWT` token string
@@ -99,7 +99,7 @@ export default function (
         const { userId } = jwt.verify(token, options.authentication.secret, {
             audience: constants.authentication.jwtAudience,
             issuer: constants.authentication.jwtIssuer
-        }) as { userId: string };
+        }) as { userId: TUserIdentifier };
 
         return userId;
     }

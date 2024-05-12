@@ -24,11 +24,13 @@ function deepCheckObject(object: object, prefix: string = '') {
  * Helper function that fills the missing properties of the `Options` object
  * with default values
  */
-export default function parseOptions(options: Options): FilledOptions {
+export default function parseOptions<TUserIdentifier>(
+    options: Options<TUserIdentifier>
+): FilledOptions<TUserIdentifier> {
     /**
      * Separation of the required and optional options
      */
-    const requiredOptions: RequiredOptions = {
+    const requiredOptions: RequiredOptions<TUserIdentifier> = {
         authentication: {
             secret: options.authentication.secret,
             userIdentifier: options.authentication.userIdentifier
