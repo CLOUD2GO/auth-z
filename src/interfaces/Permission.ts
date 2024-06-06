@@ -1,5 +1,5 @@
-import constants from '../util/constants';
-import Role from './Role';
+import type Role from './Role.js';
+import type constants from '../util/constants.js';
 
 /**
  * Default resource applied to a permission when no resource is specified,

@@ -1,7 +1,7 @@
-import { Options, Permission } from '../index';
-import Role from '../src/interfaces/Role';
-import { FilledOptions } from '../src/interfaces/Options';
-import { mockRolesProvider, mockUserIdentifier } from './helpers';
+import { Options, Permission } from '../index.js';
+import Role from '../src/interfaces/Role.js';
+import { FilledOptions } from '../src/interfaces/Options.js';
+import { mockRolesProvider, mockUserIdentifier } from './helpers.js';
 
 /**
  * Mock authentication secret for `JWT` authentication

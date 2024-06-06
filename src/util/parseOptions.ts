@@ -1,12 +1,13 @@
 import fillObject from 'fill-object';
-import Options, {
+import constants from './constants.js';
+
+import type Options from '../interfaces/Options.js';
+import type { DeepPartial } from '../interfaces/DeepProp.js';
+import type {
     FilledOptions,
     OptionalOptions,
     RequiredOptions
-} from '../interfaces/Options';
-import constants from './constants';
-import { DeepPartial } from '../interfaces/DeepProp';
-
+} from '../interfaces/Options.js';
 /**
  * Helper function that checks if all the properties of an object are defined
  */

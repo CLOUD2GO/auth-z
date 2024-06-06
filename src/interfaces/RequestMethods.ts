@@ -1,5 +1,5 @@
-import Permission from './Permission';
-import Role from './Role';
+import type Permission from './Permission.js';
+import type Role from './Role.js';
 /**
  * Object injected into the `Request.authZ` property, containing methods
  * to deal with permissions and roles

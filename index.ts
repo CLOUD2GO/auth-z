@@ -1,13 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
-import Options from './src/interfaces/Options';
-import parseOptions from './src/util/parseOptions';
-import AuthenticationProvider from './src/services/AuthenticationProvider';
-import responseError from './src/util/responseError';
-import PermissionParser from './src/services/PermissionParser';
-import RequestMethods from './src/interfaces/RequestMethods';
-import Permission from './src/interfaces/Permission';
-import Role from './src/interfaces/Role';
-import Nullable from './src/interfaces/Nullable';
+import AuthenticationProvider from './src/services/AuthenticationProvider.js';
+import PermissionParser from './src/services/PermissionParser.js';
+import parseOptions from './src/util/parseOptions.js';
+import responseError from './src/util/responseError.js';
+
+import type { Request, Response, NextFunction } from 'express';
+import type Options from './src/interfaces/Options.js';
+import type RequestMethods from './src/interfaces/RequestMethods.js';
+import type Permission from './src/interfaces/Permission.js';
+import type Role from './src/interfaces/Role.js';
+import type Nullable from './src/interfaces/Nullable.js';
 
 /**
  * Internal type of the `Express.Request` interface, used to augment the
@@ -42,8 +43,8 @@ declare global {
  * express application, allowing `JWT` authentication and complex authorization
  * handling
  */
-export default function AuthZ<TUserIndentifier = string>(
-    options: Options<TUserIndentifier>
+export default function AuthZ<TUserIdentifier = string>(
+    options: Options<TUserIdentifier>
 ) {
     /**
      * Parsed options, with default values for missing properties
@@ -84,7 +85,7 @@ export default function AuthZ<TUserIndentifier = string>(
             return;
         }
 
-        let userId: TUserIndentifier;
+        let userId: TUserIdentifier;
 
         /**
          * Validate the `JWT` token, and get the user identifier from the
@@ -182,8 +183,8 @@ export default function AuthZ<TUserIndentifier = string>(
                 );
             },
 
-            getUserIdentifier<TUserIndentifier = unknown>() {
-                return userId as unknown as TUserIndentifier;
+            getUserIdentifier<TUserIdentifier = unknown>() {
+                return userId as unknown as TUserIdentifier;
             }
         };
 
