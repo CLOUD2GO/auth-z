@@ -1,6 +1,7 @@
-import Permission from '../interfaces/Permission';
-import Role from '../interfaces/Role';
-import constants from '../util/constants';
+import constants from '../util/constants.js';
+
+import type Permission from '../interfaces/Permission.js';
+import type Role from '../interfaces/Role.js';
 
 export type PermissionsHandler = ReturnType<typeof PermissionParser>;
 

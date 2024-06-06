@@ -1,13 +1,15 @@
 import fillObject from 'fill-object';
 import { getMockReq, getMockRes } from '@jest-mock/express';
-import AuthenticationProvider from '../src/services/AuthenticationProvider';
 import { NextFunction, Request, Response } from 'express';
-import { MockOptions } from './constants';
-import { emptyRoles } from './constants';
-import { localRoles } from './constants';
-import { globalRoles } from './constants';
-import PermissionParser from '../src/services/PermissionParser';
-import Nullable from '../src/interfaces/Nullable';
+import AuthenticationProvider from '../src/services/AuthenticationProvider.js';
+import {
+    MockOptions,
+    emptyRoles,
+    localRoles,
+    globalRoles
+} from './constants.js';
+import PermissionParser from '../src/services/PermissionParser.js';
+import type Nullable from '../src/interfaces/Nullable.js';
 
 /**
  * Type of user to be used in the tests

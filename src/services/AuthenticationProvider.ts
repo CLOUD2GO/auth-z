@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { FilledOptions } from '../interfaces/Options';
-import constants from '../util/constants';
-import responseError from '../util/responseError';
+import responseError from '../util/responseError.js';
+import constants from '../util/constants.js';
+
+import type { Request, Response } from 'express';
+import type { FilledOptions } from '../interfaces/Options.js';
 /**
  * The authentication provider service, used to manage `JWT` authentication
  * within the application. It provides resources to authenticate and validate

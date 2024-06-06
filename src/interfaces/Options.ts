@@ -1,8 +1,8 @@
-import { Request } from 'express';
-import Awaitable from './Awaitable';
-import Nullable from './Nullable';
-import { DeepPartial } from './DeepProp';
-import Role from './Role';
+import type { Request } from 'express';
+import type Awaitable from './Awaitable.js';
+import type Nullable from './Nullable.js';
+import type { DeepPartial } from './DeepProp.js';
+import type Role from './Role.js';
 /**
  * Represents the required part of the options to create an `AuthZ` instance
  */

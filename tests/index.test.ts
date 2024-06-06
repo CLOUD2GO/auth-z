@@ -5,7 +5,7 @@
 
 import { test, expect, describe } from '@jest/globals';
 
-import authZ from './index';
+import authZ from '../index.js';
 import {
     MockOptions,
     emptyPermissions,
@@ -14,13 +14,13 @@ import {
     globalRoles,
     localPermissions,
     localRoles
-} from './tests/constants';
+} from './constants.js';
 import {
     authenticate,
     getAuthenticationProvider,
     getPermissionParser,
     getServerFlow
-} from './tests/helpers';
+} from './helpers.js';
 
 describe('Creation of instance with different configurations', () => {
     test('Creation with minimal options', () => {

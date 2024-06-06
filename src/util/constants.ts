@@ -1,4 +1,4 @@
-import { OptionalOptions } from '../interfaces/Options';
+import type { OptionalOptions } from '../interfaces/Options.js';
 
 /**
  * Default values for the optional options
