@@ -3,6 +3,7 @@ import responseError from '../util/responseError.js';
 import constants from '../util/constants.js';
 
 import type { Request, Response } from 'express';
+import type Nullable from '../interfaces/Nullable.js';
 import type { FilledOptions } from '../interfaces/Options.js';
 /**
  * The authentication provider service, used to manage `JWT` authentication
@@ -22,13 +23,28 @@ export default function AuthenticationProvider<TUserIdentifier>(
         if (!options.authentication.secret)
             throw new Error('Authentication secret must be set');
 
+        let userId: Nullable<TUserIdentifier>;
+
         /**
          * Get the user identifier from the request, this can be a username,
          * email, or any other unique identifier controlled by the application.
          * It's uniqueness and validity is not validated by the library, and
          * is a responsibility of the application
          */
-        const userId = await options.authentication.userIdentifier(request);
+        try {
+            userId = await options.authentication.userIdentifier(request);
+        } catch (err) {
+            /**
+             * If an error occurs during the user identifier retrieval, the
+             * authentication flow should be aborted, and the error should be
+             * returned to the user
+             */
+            response
+                .status(401)
+                .json(responseError(`Invalid user: ${(err as Error).message}`));
+
+            return;
+        }
 
         /**
          * If the `userId` returns `null`, it means that the used could not be

@@ -149,7 +149,10 @@ export interface Options<TUserIdentifier = string> {
     authentication: {
         /**
          * A function that returns a **user unique identifier**, agnostic to authentication method or
-         * information. This identifier will be used to generate the JWT for further requests.
+         * information. This identifier will be used to generate the JWT for further requests. If the user
+         * is `null`, the authentication request will be aborted with a `401` error response. Any errors
+         * thrown by this function will be returned to the user as a `401` error with the error message
+         * within the response body.
          */
         userIdentifier: (
             request: Request
