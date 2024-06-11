@@ -8,6 +8,12 @@ const defaultOptions: OptionalOptions = {
         expirationTimeSpan: 3600,
         method: 'POST',
         path: '/authenticate'
+    },
+    authorization: {
+        iamEndpoint: {
+            method: 'GET',
+            path: '/authz/iam'
+        }
     }
 };
 
@@ -32,7 +38,7 @@ export default {
          * The subject of the `JWT` token
          */
         jwtSubject: '@cloud2go/auth-z User'
-    } as const,
+    },
     /**
      * Authorization related constants
      */
@@ -54,7 +60,7 @@ export default {
              * Resource array that represents no resources (empty) in a permission action
              */
             empty: [] as string[]
-        } as const,
+        },
         /**
          * Permission scope related constants, such as the validation regex
          */
@@ -64,7 +70,7 @@ export default {
              * only alphanumeric characters, dashes and underscores
              */
             validationRegex: /^[A-Z0-9_-]+$/i
-        } as const,
+        },
         /**
          * Permission action related constants, such as the allowed values
          */
@@ -73,7 +79,7 @@ export default {
              * The allowed values for a permission action
              */
             allowedValues: ['Read', 'Write', 'ReadWrite'] as const
-        } as const,
+        },
         /**
          * Permission internal storage related constants
          */
@@ -82,6 +88,6 @@ export default {
              * The glue used to join the permission context and scope for dictionary keys
              */
             glue: ':'
-        } as const
-    } as const
+        }
+    }
 } as const;

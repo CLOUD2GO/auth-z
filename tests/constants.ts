@@ -138,7 +138,11 @@ export const MockOptions = {
             method: 'POST'
         },
         authorization: {
-            rolesProvider: mockRolesProvider
+            rolesProvider: mockRolesProvider,
+            iamEndpoint: {
+                path: '/authz/iam',
+                method: 'GET'
+            }
         }
     } as FilledOptions,
 

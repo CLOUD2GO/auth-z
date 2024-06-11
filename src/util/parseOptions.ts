@@ -21,6 +21,13 @@ function deepCheckObject(object: object, prefix: string = '') {
     }
 }
 
+type OptionalOptionsWithoutIamEndpoint = Omit<
+    OptionalOptions,
+    'authorization'
+> & {
+    authorization: Omit<OptionalOptions['authorization'], 'iamEndpoint'>;
+};
+
 /**
  * Helper function that fills the missing properties of the `Options` object
  * with default values
@@ -41,7 +48,7 @@ export default function parseOptions<TUserIdentifier>(
         }
     };
 
-    const _optionalOptions: DeepPartial<OptionalOptions> = {
+    const _optionalOptions: DeepPartial<OptionalOptionsWithoutIamEndpoint> = {
         authentication: {
             expirationTimeSpan: options.authentication.expirationTimeSpan,
             method: options.authentication.method,
@@ -57,11 +64,22 @@ export default function parseOptions<TUserIdentifier>(
     /**
      * Fill the missing properties of the optional options with default values
      */
-    const optionalOptions: OptionalOptions = fillObject(
-        _optionalOptions as Partial<OptionalOptions>,
+    const optionalOptions: OptionalOptionsWithoutIamEndpoint = fillObject(
+        _optionalOptions as Partial<OptionalOptionsWithoutIamEndpoint>,
         constants.defaultOptions,
         true
     );
+
+    const iamEndpoint =
+        options.authorization.iamEndpoint === null
+            ? null
+            : typeof options.authorization.iamEndpoint === 'undefined'
+              ? constants.defaultOptions.authorization.iamEndpoint
+              : fillObject(
+                    options.authorization.iamEndpoint,
+                    constants.defaultOptions.authorization.iamEndpoint!,
+                    true
+                );
 
     /**
      * Spread the required and optional options into the final object
@@ -72,7 +90,9 @@ export default function parseOptions<TUserIdentifier>(
             ...requiredOptions.authentication
         },
         authorization: {
-            ...requiredOptions.authorization
+            ...optionalOptions.authorization,
+            ...requiredOptions.authorization,
+            iamEndpoint
         }
     };
 

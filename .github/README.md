@@ -180,6 +180,20 @@ export interface Options<TUserIdentifier = string> {
          * A function that returns the roles of a given user, identified by the `userIdentifier` callback.
          */
         rolesProvider: (userId: TUserIdentifier) => Awaitable<Role[]>;
+        /**
+         * The configuration to the IAM endpoint, which returns the user identification, it's permissions and roles.
+         * If `null` the IAM endpoint will be disabled.
+         */
+        iamEndpoint?: Nullable<{
+            /**
+             * The path to the IAM endpoint, defaults to `/authz/iam`.
+             */
+            path: string;
+            /**
+             * The HTTP method to be used on the IAM endpoint, defaults to `GET`.
+             */
+            method: HttpMethod;
+        }>;
     };
 }
 ```

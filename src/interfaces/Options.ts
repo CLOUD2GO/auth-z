@@ -3,6 +3,7 @@ import type Awaitable from './Awaitable.js';
 import type Nullable from './Nullable.js';
 import type { DeepPartial } from './DeepProp.js';
 import type Role from './Role.js';
+import type HttpMethod from './HttpMethod.js';
 /**
  * Represents the required part of the options to create an `AuthZ` instance
  */
@@ -49,11 +50,30 @@ export interface OptionalOptions {
         /**
          * The HTTP method to be used on the authentication endpoint, defaults to `POST`.
          */
-        method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+        method: HttpMethod;
         /**
          * The JWT expiration time span, in **seconds**, defaults to `3600`, or 1 hour.
          */
         expirationTimeSpan: number;
+    };
+    /**
+     * Details for the user authorization.
+     */
+    authorization: {
+        /**
+         * The configuration to the IAM endpoint, which returns the user identification, it's permissions and roles.
+         * If `null` the IAM endpoint will be disabled.
+         */
+        iamEndpoint: Nullable<{
+            /**
+             * The path to the IAM endpoint, defaults to `/authz/iam`.
+             */
+            path: string;
+            /**
+             * The HTTP method to be used on the IAM endpoint, defaults to `GET`.
+             */
+            method: HttpMethod;
+        }>;
     };
 }
 

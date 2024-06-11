@@ -9,6 +9,7 @@ import type RequestMethods from './src/interfaces/RequestMethods.js';
 import type Permission from './src/interfaces/Permission.js';
 import type Role from './src/interfaces/Role.js';
 import type Nullable from './src/interfaces/Nullable.js';
+import requestKind from './src/util/requestKind.js';
 
 /**
  * Internal type of the `Express.Request` interface, used to augment the
@@ -51,6 +52,20 @@ export default function AuthZ<TUserIdentifier = string>(
      */
     const _options = parseOptions(options);
 
+    const authenticationRequestKind = requestKind(
+        _options.authentication.method,
+        _options.authentication.path
+    );
+
+    const iamEndpointRequestKind =
+        options.authorization.iamEndpoint !== null &&
+        _options.authorization.iamEndpoint
+            ? requestKind(
+                  _options.authorization.iamEndpoint.method,
+                  _options.authorization.iamEndpoint.path
+              )
+            : null;
+
     /**
      * Global middleware to be used on the express application, it will
      * handle the `JWT` authentication, set the `Request.authZ` property
@@ -60,7 +75,7 @@ export default function AuthZ<TUserIdentifier = string>(
         request: Request,
         response: Response,
         next: NextFunction
-    ) {
+    ): Promise<void> {
         /**
          * Authentication provider, used to authenticate and validate the
          * `JWT` token within the application.
@@ -72,16 +87,16 @@ export default function AuthZ<TUserIdentifier = string>(
         );
 
         /**
-         * If the request is a authentication request, the authentication
-         * will be redirected to the authentication provider
+         * Request kind, used to identify the request and apply the correct
          */
-        if (
-            request.path === _options.authentication.path &&
-            request.method.toUpperCase() ===
-                _options.authentication.method.toUpperCase()
-        ) {
-            await authProvider.authenticate();
+        const kind = requestKind(request.method, request.path);
 
+        /**
+         * If the request is an authentication request, the authentication is performed
+         * and the flow is stopped
+         */
+        if (kind === authenticationRequestKind) {
+            await authProvider.authenticate();
             return;
         }
 
@@ -122,6 +137,16 @@ export default function AuthZ<TUserIdentifier = string>(
          * Parsed `Permission` array, to be used by the `Request.authZ`
          */
         const permissions = permissionParser.unwrap();
+
+        if (iamEndpointRequestKind && kind === iamEndpointRequestKind) {
+            response.json({
+                userId,
+                roles,
+                permissions
+            });
+
+            return;
+        }
 
         /**
          * Set the `Request.authZ` property, containing the authorization methods
