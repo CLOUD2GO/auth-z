@@ -12,7 +12,7 @@ const defaultOptions: OptionalOptions = {
     authorization: {
         iamEndpoint: {
             method: 'GET',
-            path: '/authz/iam'
+            path: '/iam'
         }
     }
 };

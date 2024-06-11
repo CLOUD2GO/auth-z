@@ -140,7 +140,7 @@ export const MockOptions = {
         authorization: {
             rolesProvider: mockRolesProvider,
             iamEndpoint: {
-                path: '/authz/iam',
+                path: '/iam',
                 method: 'GET'
             }
         }

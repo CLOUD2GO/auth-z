@@ -186,7 +186,7 @@ export interface Options<TUserIdentifier = string> {
          */
         iamEndpoint?: Nullable<{
             /**
-             * The path to the IAM endpoint, defaults to `/authz/iam`.
+             * The path to the IAM endpoint, defaults to `/iam`.
              */
             path: string;
             /**
