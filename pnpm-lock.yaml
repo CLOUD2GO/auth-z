@@ -33,8 +33,8 @@ importers:
                 specifier: ^5.0.1
                 version: 5.0.1
             '@types/jsonwebtoken':
-                specifier: ^9.0.9
-                version: 9.0.9
+                specifier: ^9.0.2
+                version: 9.0.2
             '@types/node':
                 specifier: ^22.14.1
                 version: 22.14.1
@@ -455,10 +455,10 @@ packages:
     '@types/istanbul-reports@3.0.4':
         resolution: { integrity: sha1-DwPj0vZw+9rFhuNLQzeDBwzBb1Q= }
 
-    '@types/jsonwebtoken@9.0.9':
+    '@types/jsonwebtoken@9.0.2':
         resolution:
             {
-                integrity: sha512-uoe+GxEuHbvy12OUQct2X9JenKM3qAscquYymuQN4fMWG9DBQtykrQEFcAbVACF7qaLw9BePSodUL0kquqBJpQ==
+                integrity: sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==
             }
 
     '@types/mime@1.3.5':
@@ -471,12 +471,6 @@ packages:
         resolution:
             {
                 integrity: sha512-iJt33IQnVRkqeqC7PzBHPTC6fDlRNRW8vjrgqtScAhrmMwe8c4Eo7+fUGTa+XdWrpEgpyKWMYmi2dIwMAYRzPw==
-            }
-
-    '@types/ms@2.1.0':
-        resolution:
-            {
-                integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
             }
 
     '@types/node@22.14.1':
@@ -637,7 +631,10 @@ packages:
         resolution: { integrity: sha1-5nh9og7OnQeZhTPP2d5vXDj0vAU= }
 
     buffer-equal-constant-time@1.0.1:
-        resolution: { integrity: sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk= }
+        resolution:
+            {
+                integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==
+            }
 
     buffer-from@1.1.2:
         resolution: { integrity: sha1-KxRqb9cugLT1XSVfNe1Zo6mkG9U= }
@@ -834,7 +831,10 @@ packages:
         engines: { node: '>= 0.4' }
 
     ecdsa-sig-formatter@1.0.11:
-        resolution: { integrity: sha1-rg8PothQRe8UqBfao86azQSJ5b8= }
+        resolution:
+            {
+                integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==
+            }
 
     ee-first@1.1.1:
         resolution:
@@ -1347,14 +1347,23 @@ packages:
         hasBin: true
 
     jsonwebtoken@9.0.2:
-        resolution: { integrity: sha1-Zf+R9KvvF4RpfUCVK7GZjFBMqvM= }
+        resolution:
+            {
+                integrity: sha512-PRp66vJ865SSqOlgqS8hujT5U4AOgMfhrwYIuIhfKaoSCZcirrmASQr8CX7cUg+RMih+hgznrjp99o+W4pJLHQ==
+            }
         engines: { node: '>=12', npm: '>=6' }
 
     jwa@1.4.1:
-        resolution: { integrity: sha1-dDwymFy56YZVUw1TZBtmyGRbA5o= }
+        resolution:
+            {
+                integrity: sha512-qiLX/xhEEFKUAJ6FiBMbes3w9ATzyk5W7Hvzpa/SLYdxNtng+gcurvrI7TbACjIXlsJyr05/S1oUhZrc63evQA==
+            }
 
     jws@3.2.2:
-        resolution: { integrity: sha1-ABCZ82OUaMlBQADpmZX6UvtHgwQ= }
+        resolution:
+            {
+                integrity: sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==
+            }
 
     kleur@3.0.3:
         resolution: { integrity: sha1-p5yezIbuHOP6YgbRIWxQHxR/wH4= }
@@ -1372,22 +1381,40 @@ packages:
         engines: { node: '>=8' }
 
     lodash.includes@4.3.0:
-        resolution: { integrity: sha1-YLuYqHy5I8aMoeUTJUgzFISfVT8= }
+        resolution:
+            {
+                integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==
+            }
 
     lodash.isboolean@3.0.3:
-        resolution: { integrity: sha1-bC4XHbKiV82WgC/UOwGyDV9YcPY= }
+        resolution:
+            {
+                integrity: sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==
+            }
 
     lodash.isinteger@4.0.4:
-        resolution: { integrity: sha1-YZwK89A/iwTDH1iChAt3sRzWg0M= }
+        resolution:
+            {
+                integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==
+            }
 
     lodash.isnumber@3.0.3:
-        resolution: { integrity: sha1-POdoEMWSjQM1IwGsKHMX8RwLH/w= }
+        resolution:
+            {
+                integrity: sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==
+            }
 
     lodash.isplainobject@4.0.6:
-        resolution: { integrity: sha1-fFJqUtibRcRcxpC4gWO+BJf1UMs= }
+        resolution:
+            {
+                integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==
+            }
 
     lodash.isstring@4.0.1:
-        resolution: { integrity: sha1-1SfftUVuynzJu5XV2ur4i6VKVFE= }
+        resolution:
+            {
+                integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==
+            }
 
     lodash.memoize@4.1.2:
         resolution:
@@ -1396,7 +1423,10 @@ packages:
             }
 
     lodash.once@4.1.1:
-        resolution: { integrity: sha1-DdOXEhPHxW34gJd9UEyI+0cal6w= }
+        resolution:
+            {
+                integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==
+            }
 
     lru-cache@5.1.1:
         resolution: { integrity: sha1-HaJ+ZxAnGUdpXa9oSOhH8B2EuSA= }
@@ -1481,7 +1511,10 @@ packages:
         resolution: { integrity: sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk= }
 
     ms@2.1.3:
-        resolution: { integrity: sha1-V0yBOM4dK1hh8LRFedut1gxmFbI= }
+        resolution:
+            {
+                integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
+            }
 
     natural-compare@1.4.0:
         resolution: { integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc= }
@@ -1673,7 +1706,10 @@ packages:
         engines: { node: '>= 18' }
 
     safe-buffer@5.2.1:
-        resolution: { integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY= }
+        resolution:
+            {
+                integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
+            }
 
     safer-buffer@2.1.2:
         resolution:
@@ -2520,16 +2556,13 @@ snapshots:
         dependencies:
             '@types/istanbul-lib-report': 3.0.3
 
-    '@types/jsonwebtoken@9.0.9':
+    '@types/jsonwebtoken@9.0.2':
         dependencies:
-            '@types/ms': 2.1.0
             '@types/node': 22.14.1
 
     '@types/mime@1.3.5': {}
 
     '@types/mime@3.0.4': {}
-
-    '@types/ms@2.1.0': {}
 
     '@types/node@22.14.1':
         dependencies:
@@ -3449,7 +3482,7 @@ snapshots:
             lodash.isstring: 4.0.1
             lodash.once: 4.1.1
             ms: 2.1.3
-            semver: 7.6.0
+            semver: 7.7.1
 
     jwa@1.4.1:
         dependencies:

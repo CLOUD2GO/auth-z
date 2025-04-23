@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import responseError from '../util/responseError.js';
 import constants from '../util/constants.js';
 
