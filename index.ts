@@ -333,4 +333,4 @@ export default function AuthZ<TUserIdentifier = string>(
 /**
  * Public interfaces exported by the library
  */
-export { Options, Permission, Role, RequestMethods };
+export type { Options, Permission, Role, RequestMethods };

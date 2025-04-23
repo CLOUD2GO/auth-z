@@ -5,10 +5,22 @@ import constants from '../util/constants.js';
 import type { Request, Response } from 'express';
 import type Nullable from '../interfaces/Nullable.js';
 import type { FilledOptions } from '../interfaces/Options.js';
+
+/**
+ * The authentication provider instance, used to manage `JWT` authentication
+ */
+export type AuthenticationProviderInstance = ReturnType<
+    typeof AuthenticationProvider
+>;
+
 /**
  * The authentication provider service, used to manage `JWT` authentication
  * within the application. It provides resources to authenticate and validate
- * an authenticated user
+ * an authenticated user.
+ * @param options The options to configure the authentication provider
+ * @param request The request object from the `express` application
+ * @param response The response object from the `express` application
+ * @typeParam TUserIdentifier The type of the user identifier
  */
 export default function AuthenticationProvider<TUserIdentifier>(
     options: FilledOptions<TUserIdentifier>,
@@ -18,8 +30,9 @@ export default function AuthenticationProvider<TUserIdentifier>(
     /**
      * Authenticate method, used when a unauthenticated user starts a
      * authentication flow, or for token regeneration
+     * @returns A `Promise` that resolves when the authentication response is complete, succeeded or failed
      */
-    async function authenticate() {
+    async function authenticate(): Promise<void> {
         if (!options.authentication.secret)
             throw new Error('Authentication secret must be set');
 
@@ -94,6 +107,9 @@ export default function AuthenticationProvider<TUserIdentifier>(
     /**
      * Authentication validation method, used when a authenticated user
      * makes a request to the application
+     * @returns The user identifier from the `JWT` token
+     * @throws Error if the `JWT` token is invalid or expired
+     * @throws Error if the `Authorization` header is missing or invalid
      */
     function validate(): TUserIdentifier {
         /**
@@ -122,7 +138,19 @@ export default function AuthenticationProvider<TUserIdentifier>(
     }
 
     return {
+        /**
+         * Authenticate method, used when a unauthenticated user starts a
+         * authentication flow, or for token regeneration
+         * @returns A `Promise` that resolves when the authentication response is complete, succeeded or failed
+         */
         authenticate,
+        /**
+         * Authentication validation method, used when a authenticated user
+         * makes a request to the application
+         * @returns The user identifier from the `JWT` token
+         * @throws Error if the `JWT` token is invalid or expired
+         * @throws Error if the `Authorization` header is missing or invalid
+         */
         validate
     };
 }

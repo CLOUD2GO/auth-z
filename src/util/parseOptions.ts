@@ -1,4 +1,5 @@
 import fillObject from 'fill-object';
+import deepCheckObject from './deepCheckObject.js';
 import constants from './constants.js';
 
 import type Options from '../interfaces/Options.js';
@@ -8,18 +9,6 @@ import type {
     OptionalOptions,
     RequiredOptions
 } from '../interfaces/Options.js';
-/**
- * Helper function that checks if all the properties of an object are defined
- */
-function deepCheckObject(object: object, prefix: string = '') {
-    for (const [key, value] of Object.entries(object)) {
-        if (value === undefined)
-            throw new Error(`Missing required option: ${prefix}${key}`);
-
-        if (typeof value === 'object' && value !== null)
-            deepCheckObject(value, `${prefix}${key}.`);
-    }
-}
 
 type OptionalOptionsWithoutIamEndpoint = Omit<
     OptionalOptions,
@@ -31,6 +20,10 @@ type OptionalOptionsWithoutIamEndpoint = Omit<
 /**
  * Helper function that fills the missing properties of the `Options` object
  * with default values
+ * @param options The options to fill
+ * @returns The filled options
+ * @typeParam TUserIdentifier The type of the user identifier
+ * @throws Error if any of the required options are missing or invalid
  */
 export default function parseOptions<TUserIdentifier>(
     options: Options<TUserIdentifier>

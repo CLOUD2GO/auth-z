@@ -10,4 +10,4 @@ You still have the control of which actions, resources and scopes are allowed, b
 
 ## Documentation and Source Code
 
-You can find the full documentation and source-code of this package [here](https://github.com/Giancarl021/auth-z).
+You can find the full documentation and source-code of this package [here](https://github.com/CLOUD2GO/auth-z).
