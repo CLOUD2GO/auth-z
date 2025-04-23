@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import responseError from '../util/responseError.js';
 import constants from '../util/constants.js';
 
@@ -81,16 +81,12 @@ export default function AuthenticationProvider<TUserIdentifier>(
          * The `JWT` token string, used for further authentication within the
          * application
          */
-        const tokenString = jwt.sign(
-            { userId },
-            options.authentication.secret,
-            {
-                expiresIn,
-                issuer: constants.authentication.jwtIssuer,
-                audience: constants.authentication.jwtAudience,
-                subject: constants.authentication.jwtSubject
-            }
-        );
+        const tokenString = sign({ userId }, options.authentication.secret, {
+            expiresIn,
+            issuer: constants.authentication.jwtIssuer,
+            audience: constants.authentication.jwtAudience,
+            subject: constants.authentication.jwtSubject
+        });
 
         /**
          * The final response to the unauthorized request, containing the
@@ -129,7 +125,7 @@ export default function AuthenticationProvider<TUserIdentifier>(
          * used to identify the user roles within the application by the
          * `PermissionParser` service
          */
-        const { userId } = jwt.verify(token, options.authentication.secret, {
+        const { userId } = verify(token, options.authentication.secret, {
             audience: constants.authentication.jwtAudience,
             issuer: constants.authentication.jwtIssuer
         }) as { userId: TUserIdentifier };
