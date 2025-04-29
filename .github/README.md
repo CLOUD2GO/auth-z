@@ -311,3 +311,48 @@ authZ.withActions(...permissionActions); // Middleware to check if the user has 
 authZ.withGlobalActions(...globalPermissionActions); // Middleware to check if the user has the specified global permission actions on a route
 authZ.withLocalActions(...localPermissionActions); // Middleware to check if the user has the specified local permission actions on a route
 ```
+
+## Endpoints
+
+The library creates two endpoints, processed in the global middleware.
+
+The first one is the **Authentication endpoint**, used to generate a valid JWT token for the client. It defaults to `POST /authenticate`, but can be changed using the `options.authentication.path` and `options.authentication.method`. The request details is defined by the user provider, being implementation-specific. The response body looks like this:
+
+```json
+{
+    "token": "...",
+    "expiresIn": 3600
+}
+```
+
+The `token` property contains the JWT Bearer token to use in the `Authorization` header with the `Bearer ` prefix, it will allow the authenticated user to call the rest of the API endpoints. The `expiresIn` property contains how much time (in seconds) the token will live.
+
+The second one is the **IAM endpoint**, used to return to the user the permissions, roles and the `TUserIdentifier`. It defaults to `GET /iam`, but can be changed in the `options.authorization.iamEndpoint.path` and `options.authorization.iamEndpoint.method`. This endpoint can be disabled by setting the property `options.authorization.iamEndpoint` to `null`. This request requires an authentication token and will always return, independently of the user permissions. The response body looks like this:
+
+```json
+{
+    "userId": {},
+    "roles": [
+        {
+            "context": "global",
+            "id": "ADMIN",
+            "name": "Global Administrator",
+            "description": "Can do anything in the system",
+            "permissions": ["System.ReadWrite.All"],
+        }
+    ],
+    "permissions": [
+        {
+            "context": "global",
+            "scope": "System",
+            "action": {
+                "read": true,
+                "write": true
+            }
+            "resource": "All"
+        }
+    ]
+}
+```
+
+The `userId` property contains the data returned by the `options.authentication.userIdentifier` function, being implementation-specific. The `roles` property contains the data returned by the `options.authorization.rolesProvider`, an array of the `Role` type. The `permissions` property contains the parsed permissions from the `roles` property, containing a more developer-friendly shape to access the data of each permission.
