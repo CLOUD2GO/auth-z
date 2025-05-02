@@ -89,7 +89,10 @@ export default function AuthZ<TUserIdentifier = string>(
         /**
          * Request kind, used to identify the request and apply the correct
          */
-        const kind = requestKind(request.method, request.path);
+        const kind = requestKind(
+            request.method,
+            request.baseUrl + request.path
+        );
 
         /**
          * If the request is an authentication request, the authentication is performed
