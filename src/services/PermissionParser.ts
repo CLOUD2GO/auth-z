@@ -99,8 +99,6 @@ export default function PermissionParser(roles: Role[]) {
 
         // Iterate over the roles and populate the permissions map
         for (const role of roles) {
-            const changedPermissions = new Set<string>();
-
             // Each permission string (e.g `scope.action.resource`) is parsed
             for (const permissionString of role.permissions) {
                 const { context } = role;
@@ -154,44 +152,7 @@ export default function PermissionParser(roles: Role[]) {
 
                 // Update de permisssions map with the new permission
                 permissions.set(key, currentPermission);
-                changedPermissions.add(key);
             }
-
-            // Iterate over the permissions and optimize them, this is done after each role to avoid extra computing in the next role iteration
-            for (const permissionKey of changedPermissions) {
-                const permission = permissions.get(permissionKey)!;
-
-                // Iterate over the actions and optimize them
-                for (const action in permission) {
-                    const _key = action as InternalPermissionAction;
-
-                    // If the permission has a list of resources, check possibility of optimization
-                    if (Array.isArray(permission[_key])) {
-                        // If some of the resources is `<all>`, set all the action to `<all>`
-                        if (
-                            permission[_key].includes(
-                                constants.authorization.resources.all
-                            )
-                        ) {
-                            permission[_key] =
-                                constants.authorization.resources.all;
-                            // If all the resources are `<default>`, set all the action to `<default>`
-                        } else if (
-                            permission[_key].length > 0 &&
-                            (permission[_key] as string[]).every(
-                                resource =>
-                                    resource ===
-                                    constants.authorization.resources.default
-                            )
-                        ) {
-                            permission[_key] =
-                                constants.authorization.resources.default;
-                        }
-                    }
-                }
-            }
-
-            changedPermissions.clear();
         }
     }
 

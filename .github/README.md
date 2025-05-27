@@ -338,7 +338,7 @@ The second one is the **IAM endpoint**, used to return to the user the permissio
             "id": "ADMIN",
             "name": "Global Administrator",
             "description": "Can do anything in the system",
-            "permissions": ["System.ReadWrite.All"],
+            "permissions": ["System.ReadWrite.All"]
         }
     ],
     "permissions": [
@@ -348,7 +348,7 @@ The second one is the **IAM endpoint**, used to return to the user the permissio
             "action": {
                 "read": true,
                 "write": true
-            }
+            },
             "resource": "All"
         }
     ]
