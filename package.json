@@ -1,6 +1,6 @@
 {
     "name": "@cloud2go/auth-z",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "Authorization package with complex permission handling",
     "main": "lib/index.js",
     "repository": "https://github.com/Giancarl021/auth-z.git",
@@ -18,17 +18,17 @@
     },
     "devDependencies": {
         "@jest-mock/express": "^3.0.0",
-        "@jest/globals": "^30.2.0",
+        "@jest/globals": "^30.3.0",
         "@types/express": "^5.0.6",
         "@types/jsonwebtoken": "^9.0.10",
-        "@types/node": "^25.0.3",
+        "@types/node": "^25.6.0",
         "express": "^5.2.1",
         "husky": "^9.1.7",
-        "jest": "^30.2.0",
-        "prettier": "^3.7.4",
-        "ts-jest": "^29.4.6",
+        "jest": "^30.3.0",
+        "prettier": "^3.8.3",
+        "ts-jest": "^29.4.9",
         "ts-node": "^10.9.2",
-        "typescript": "^5.9.3"
+        "typescript": "^6.0.2"
     },
     "engines": {
         "node": ">=22.0.0"
@@ -40,14 +40,5 @@
     "peerDependencies": {
         "express": "^5.2.1"
     },
-    "resolutions": {
-        "@babel/helpers": "^7.26.10",
-        "braces": "^3.0.3",
-        "cross-spawn": "^7.0.5",
-        "micromatch": "^4.0.8",
-        "brace-expansion": "^2.0.2",
-        "js-yaml": "^3.14.2",
-        "glob": "^9.0.0"
-    },
-    "packageManager": "pnpm@10.26.0+sha512.3b3f6c725ebe712506c0ab1ad4133cf86b1f4b687effce62a9b38b4d72e3954242e643190fc51fa1642949c735f403debd44f5cb0edd657abe63a8b6a7e1e402"
+    "packageManager": "pnpm@11.0.0-rc.1+sha512.0d7d837668eb35b81d28f560ef8ec5e103ff5d162e249fd0d30c546c39a551d290ac9cf15709353b94d2df6eb445bfa465c7a05148d328eda32950c02e40d060"
 }
