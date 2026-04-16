@@ -3,7 +3,10 @@
     "version": "0.2.9",
     "description": "Authorization package with complex permission handling",
     "main": "lib/index.js",
-    "repository": "https://github.com/Giancarl021/auth-z.git",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Giancarl021/auth-z.git"
+    },
     "author": "Giancarlo Fontela da Luz <gian.f.luz@hotmail.com>",
     "license": "MIT",
     "private": false,
@@ -39,6 +42,9 @@
     },
     "peerDependencies": {
         "express": "^5.2.1"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "packageManager": "pnpm@11.0.0-rc.1+sha512.0d7d837668eb35b81d28f560ef8ec5e103ff5d162e249fd0d30c546c39a551d290ac9cf15709353b94d2df6eb445bfa465c7a05148d328eda32950c02e40d060"
 }
