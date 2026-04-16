@@ -10,7 +10,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,11 +43,53 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build
-    #   - name: Publish to npmjs
-    #     run: pnpm publish --provenance --no-git-checks
-    #     env:
-    #       NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm pack --out authz.tgz
+      - uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: authz.tgz
+          archive: false
+  publish_npm:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Setup Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.0.0-rc.1
+          run_install: false
+      - uses: actions/download-artifact@v7
+        with:
+          name: package
+      - name: Publish to NPM.JS
+        run: pnpm publish package.tgz --provenance --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish_gh:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Setup Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: '@cloud2go'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.0.0-rc.1
+          run_install: false
+      - uses: actions/download-artifact@v7
+        with:
+          name: package
       - name: Publish to GitHub Packages
-        run: pnpm publish --provenance --registry=https://npm.pkg.github.com --no-git-checks
+        run: pnpm publish package.tgz --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
