@@ -78,7 +78,6 @@ jobs:
         with:
           node-version: 22
           registry-url: https://npm.pkg.github.com
-          scope: '@cloud2go'
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v3
@@ -89,6 +88,6 @@ jobs:
         with:
           name: package
       - name: Publish to GitHub Packages
-        run: pnpm publish authz.tgz --no-git-checks
+        run: pnpm publish authz.tgz --no-git-checks --registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
