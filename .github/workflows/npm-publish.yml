@@ -44,11 +44,10 @@ jobs:
       - run: pnpm test
       - run: pnpm build
       - run: pnpm pack --out authz.tgz
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v4
         with:
           name: package
-          path: authz.tgz
-          archive: false
+          path: ./authz.tgz
   publish_npm:
     runs-on: ubuntu-latest
     needs: build
@@ -63,11 +62,11 @@ jobs:
         with:
           version: 11.0.0-rc.1
           run_install: false
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v4
         with:
           name: package
       - name: Publish to NPM.JS
-        run: pnpm publish package.tgz --provenance --no-git-checks
+        run: pnpm publish authz.tgz --provenance --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish_gh:
@@ -86,10 +85,10 @@ jobs:
         with:
           version: 11.0.0-rc.1
           run_install: false
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v4
         with:
           name: package
       - name: Publish to GitHub Packages
-        run: pnpm publish package.tgz --no-git-checks
+        run: pnpm publish authz.tgz --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
