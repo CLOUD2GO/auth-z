@@ -5,7 +5,7 @@
     "main": "lib/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Giancarl021/auth-z.git"
+        "url": "https://github.com/Giancarl021/auth-z.git"
     },
     "author": "Giancarlo Fontela da Luz <gian.f.luz@hotmail.com>",
     "license": "MIT",
