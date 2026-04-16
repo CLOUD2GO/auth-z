@@ -49,6 +49,7 @@ jobs:
           name: package
           path: ./authz.tgz
   publish_npm:
+    if: false
     runs-on: ubuntu-latest
     needs: build
     steps:
