@@ -1,8 +1,8 @@
 name: NPM Publish
 
 on:
-    push:
-        branches: ['master']
+  push:
+    branches: ['master']
 
 permissions:
   contents: read
@@ -10,57 +10,44 @@ permissions:
   id-token: write
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Setup Node.JS
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
+      - name: Setup Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-            - name: Setup PNPM
-              uses: pnpm/action-setup@v3
-              with:
-                  version: 11.0.0-rc.1
-                  run_install: false
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.0.0-rc.1
+          run_install: false
 
-            - name: Get PNPM Store
-              id: pnpm-cache
-              shell: bash
-              run: |
-                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+      - name: Get PNPM Store
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
-            - name: Setup PNPM Cache
-              uses: actions/cache@v3
-              with:
-                  path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pnpm-store-
-            - run: pnpm install --frozen-lockfile
-            - run: pnpm test
-            - run: pnpm build
-
-            - name: Setup Node for npmjs
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  registry-url: 'https://registry.npmjs.org'
-
-            - name: Publish to npmjs
-              run: npm publish --access public --provenance
-
-            - name: Setup Node for GitHub Packages
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  registry-url: 'https://npm.pkg.github.com'
-                  scope: '@cloud2go'
-
-            - name: Publish to GitHub Packages
-              run: npm publish --registry=https://npm.pkg.github.com
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup PNPM Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
+      - name: Publish to npmjs
+        run: pnpm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to GitHub Packages
+        run: pnpm publish --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
