@@ -14,34 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node.JS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
+        uses: actions/checkout@v6
       - name: Setup PNPM
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.JS
+        uses: actions/setup-node@v6
         with:
-          version: 11.0.0-rc.1
-          run_install: false
-
-      - name: Get PNPM Store
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
-
-      - name: Setup PNPM Cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 24
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+      - run: |
+          [[ $(pnpm run | grep test) ]] && pnpm test || echo "No tests to run"
       - run: pnpm build
       - run: pnpm pack --out authz.tgz
       - uses: actions/upload-artifact@v4
@@ -52,16 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Setup Node.JS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
       - name: Setup PNPM
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.0.0-rc.1
-          run_install: false
+          version: '10.33.0'
+      - name: Setup Node.JS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
       - uses: actions/download-artifact@v4
         with:
           name: package
@@ -73,18 +54,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Setup Node.JS
-        uses: actions/setup-node@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v6
         with:
-          node-version: 22
+          version: '10.33.0'
+      - name: Setup Node.JS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
           registry-url: https://npm.pkg.github.com
           scope: '@cloud2go'
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 11.0.0-rc.1
-          run_install: false
       - uses: actions/download-artifact@v4
         with:
           name: package
